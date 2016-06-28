@@ -1,0 +1,61 @@
+Strateji Oyun Portalý
+
+Sherlock
+Moriarty
+Plüton
+
+
+* Bu projenin her bir alt maddesi Agile metodolojilere uygun yapýlacaktýr. Yani projeye alt yapýdan daha çok, kullaným senaryolarý 
+tarafýndan bakýlacak ve alt yapý gereklilikleri, oluþan isteklere göre geliþtirilecektir.
+
+* Senaryolar, müþteri tarafýndan önceliklendirilmediði takdirde geliþtirici tarafýndan önceliklendirilecektir.
+
+* Aþaðýdaki teknik gereklilikler bu konunun tüm alt maddelerinde uygulanacaktýr. Geliþtirici, uygun gördüðü takdirde bu maddelerden 
+bazýlarýný atlayýp sonra dönüþ yapmaya karar verebilir.
+	
+	- Entity Framework ya da baþka herhangi bir Orm kullanmayacaðýz. Ýhtiyaçlarýmýz doðrultusunda küçük bir Orm yazacaðýz. Bu Orm, 
+	  basitçe, kendisine gönderilen Entity’lerin alanlarýnda dönerek Sql kodlarýmýzý generate edecek.
+	  (örnek: https://github.com/DorukUlucay/Library/blob/master/DataLayer/Providers/MsSql.cs bu örnekteki gibi dizilerle deðil nesnelerle yapýlacak. Reflection kullanýlmalý)
+
+	- Katmanlý mimari kullanacaðýz. DataLayer, Orm, Business ve UI birbirinden ayrý olacak. Tüm sýnýflarýmýz Interface’lerden türeyecek. Bu katmanlarýn hiçbiri birbirine 
+	  sýký baðlý(tightly coupled) olmayacak.
+
+	- Tüm business metodlarýmýzýn en az iki Unit Test’i olacak. Test için NUnit kullanýlacak. Her iki testten biri Moq diðeri kendi yazdýðýmýz mock sýnýflarý ile mock edilecekler.
+
+	?Araþtýrmam gerekiyor. - UI katmanýnda servis mimarisi oluþturulacak. Yani; controller'lar WebApi'den türeyecek. AngularJs ile webapi'deki api metotlarýmýza çaðrýlar yapýlacak. Mümkün olduðunca 
+	  asp.net form submit kullanýlmayacak.
+
+	- Ýsimlendirme standardý oluþturulacak ve bu standartlara uyulacak.
+
+	- Tasarým minimal ama düzgün olacak. Twitter Bootstrap kullanýmý uygundur.
+
+	- Form validasyonlarý hatasýz olmalýdýr.
+
+		-* Kullanýcý, kullanýcý adý ve parola bilgisi ile sisteme giriþ yaptýðýnda ana sayfaya yönlendirilir.
+		-** Kullanýcý Admin tarafýndan onaylanana dek sisteme giriþ yapamaz. Admin onaylayana kadar giriþ yapmaya çalýþtýðýnda bu durumla ilgili bir mesaj gösterilir.
+
+		-* Ana sayfada üstte menü çubuðu bulunur.
+
+		-* Kullanýcý, kayýt formunu doldurarak sisteme kaydolur.
+		-** Bu formda kullanýcý adý, parola(iki kez) ve email alanlarý bulunur.
+		-** Sözleþmeyi okudum ve kabul ediyorum alaný bulunur.
+		-*** Sözleþme, admin tarafýndan deðiþtirilebileceðinden, veritabanýndan gelmesi gerekmektedir.
+
+		-* Admin, kullanýcýlarla ayný ekraný kullanarak sisteme giriþ yapar.
+		-** Menü çubuðunda Kullanýcýlar menüsü vardýr(bu menüyü sadece admin görebilir)
+		-*** Bu menüye týklandýðýnda bir ekran açýlýr. Bu ekranda tüm kullanýcýlarýn olduðu bir grid vardýr.
+		-**** Grid'in her bir satýrýnda kullanýcýnýn sisteme giriþ iznini gösteren bir checkbox alaný vardýr.
+		-***** Bu alan ilk kayýt anýnda False olmalý, Admin, bu ekrandan istediði kullanýcýlara izin verebilmelidir.
+
+		-* Admin, kullanýcýlarla ayný ekraný kullanarak sisteme giriþ yapar.
+
+
+
+
+
+Agile metodolojileri araþtýrýlacak.
+Reflection araþtýrýlacak.
+servis mimarisi araþtýrýlacak.
+WebApi araþtýrýlacak.
+
+
