@@ -1,42 +1,33 @@
-﻿using DataLayer.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OrmLayer
 {
     public class MsSql<T> : IDbOrm<T> where T : class
     {
-        SqlConnection Conn = null;
+        SqlConnection conn = null;
         string _ConnectionString;
 
         public MsSql(string ConnectionString)
         {
             _ConnectionString = ConnectionString;
-            Conn = new SqlConnection(_ConnectionString);
-        }
-
-        public IEnumerable<T> SelectDataList()
-        {
-            throw new NotImplementedException();
+            conn = new SqlConnection(_ConnectionString);
         }
 
         public void Insert(T entity)
         {
-            var cmd = Conn.CreateCommand();
+            //SELECT * FROM table_name (column_name)values(parameter_name)
+
+            var cmd = conn.CreateCommand();
 
             List<string> columnList = new List<string>();
             List<string> parameterList = new List<string>();
-            int i = 0;
             foreach (var property in typeof(T).GetProperties())
             {
                 columnList.Add(property.Name);
 
-                var parameterName = string.Format("@param{0}", i++);
+                var parameterName = string.Format("@{0}", property.Name);
                 parameterList.Add(parameterName);
 
                 cmd.Parameters.AddWithValue(parameterName, property.GetValue(entity));
@@ -46,72 +37,51 @@ namespace OrmLayer
             string parametersPart = string.Join(", ", parameterList);
             cmd.CommandText = string.Format("INSERT INTO {0} ({1}) VALUES ({2})", typeof(T).Name, columnsPart, parametersPart);
 
+            conn.Open();
+            cmd.ExecuteNonQuery();
+            conn.Close();
+            conn.Dispose();
+
         }
 
         public void Update(T entity, List<DataParameter> Criterias)
         {
-            var cmd = Conn.CreateCommand();
+            //UPDATE table_name SET column_name=@parameter_name WHERE criterias=@criter
 
-            List<string> columnList = new List<string>();
+            var cmd = conn.CreateCommand();
+
+            List<string> setList = new List<string>();
             List<string> parameterList = new List<string>();
-            int i = 0;
             foreach (var property in typeof(T).GetProperties())
             {
-                columnList.Add(property.Name);
-
-                var parameterName = string.Format("@param{0}", i++);
+                var setName = string.Format("{0}=@{0}, ", property.Name);
+                setList.Add(setName);
+                var parameterName = string.Format("@{0}", property.Name);
                 parameterList.Add(parameterName);
 
                 cmd.Parameters.AddWithValue(parameterName, property.GetValue(entity));
             }
 
-            string columnsPart = string.Join(",", columnList);
-            string parametersPart = string.Join(", ", parameterList);
-
-        
-
-            cmd.CommandText = string.Format("UPDATE {0} SET {1}@={2}", typeof(T).Name, columnsPart, parametersPart);
-
-            foreach (var property in typeof(T).GetProperties())
+            List<string> criteriasList = new List<string>();
+            foreach (var c in Criterias)
             {
-                columnList.Add(property.Name);
-
-                var parameterName = string.Format("@param{0}", i++);
-                parameterList.Add(parameterName);
-
-                cmd.Parameters.AddWithValue(parameterName, property.GetValue(entity));
-            }
-            List<DataParameter> props;
-            foreach (var p in typeof(T).GetProperties())
-            {
-                props.Add(new DataParameter {Name = p, Value= p, Type = p.GetType() });
+                var criteriasName = string.Format("{0}=@{0}", c.Name);
+                criteriasList.Add(criteriasName);
             }
 
-            foreach (DataParameter p in )
-            {
-                Command += p.Name + " = @" + p.Name + ", ";
-            }
-            Command = Command.Trim().TrimEnd(',');
-            Command += " WHERE ";
-            foreach (DataParameter c in Criterias)
-            {
-                Command += c.Name + "= @" + c.Name + ", ";
-            }
-            Command = Command.Trim().TrimEnd(',');
-            using (Conn)
-            {
-                SqlCommand _COMMAND = new SqlCommand(Command, Conn);
-                foreach (DataParameter item in typeof(T).GetProperties())
-                {
-                    _COMMAND.Parameters.Add(new SqlParameter() { Value = item.Value, ParameterName = item.Name, DbType = item.Type });
-                }
-                foreach (DataParameter item in Criterias)
-                {
-                    _COMMAND.Parameters.Add(new SqlParameter() { Value = item.Value, ParameterName = item.Name, DbType = item.Type });
-                }
-                Conn.Open();
-                _COMMAND.ExecuteNonQuery();
-            }
+            cmd.CommandText = string.Format("UPDATE {0} SET {1} WHERE {2}", typeof(T).Name, setList, criteriasList);
+            cmd.ExecuteNonQuery();
+
+        }
+
+        public IEnumerable<T> SelectDataList()
+        {
+            //SELECT * FROM table_name
+
+            var cmd = conn.CreateCommand();
+
+            cmd.CommandText = string.Format("SELECT * FROM {0}",typeof(T).Name);
+            return null;
         }
 
         public void Delete(T entity)

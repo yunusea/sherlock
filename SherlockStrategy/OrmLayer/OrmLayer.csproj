@@ -40,16 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OrmLayerFactory.cs" />
+    <Compile Include="OrmManager.cs" />
     <Compile Include="DataParameter.cs" />
     <Compile Include="IDbOrm.cs" />
     <Compile Include="MsSql.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DataLayer\DataLayer.csproj">
-      <Project>{824E5D54-858B-45ED-B0D4-D45546C2CDCC}</Project>
-      <Name>DataLayer</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

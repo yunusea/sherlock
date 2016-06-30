@@ -22,8 +22,8 @@ bazýlarýný atlayýp sonra dönüþ yapmaya karar verebilir.
 
 	- Tüm business metodlarýmýzýn en az iki Unit Test’i olacak. Test için NUnit kullanýlacak. Her iki testten biri Moq diðeri kendi yazdýðýmýz mock sýnýflarý ile mock edilecekler.
 
-	?Araþtýrmam gerekiyor. - UI katmanýnda servis mimarisi oluþturulacak. Yani; controller'lar WebApi'den türeyecek. AngularJs ile webapi'deki api metotlarýmýza çaðrýlar yapýlacak. Mümkün olduðunca 
-	  asp.net form submit kullanýlmayacak.
+	?Araþtýrmam gerekiyor. - UI katmanýnda servis mimarisi oluþturulacak. Yani; controller'lar WebApi'den türeyecek. AngularJs ile webapi'deki api metotlarýmýza çaðrýlar yapýlacak. 
+	Mümkün olduðunca asp.net form submit kullanýlmayacak.
 
 	- Ýsimlendirme standardý oluþturulacak ve bu standartlara uyulacak.
 
@@ -59,3 +59,5 @@ servis mimarisi araþtýrýlacak.
 WebApi araþtýrýlacak.
 
 
+
+Ýlk olarak WebApi Üzerinden bir kayýt sayfasý yapacaðým. 
