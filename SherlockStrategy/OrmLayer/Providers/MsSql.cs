@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace OrmLayer
+namespace OrmLayer.Providers
 {
     public class MsSql<T> : IDbOrm<T> where T : class
     {
@@ -80,7 +83,7 @@ namespace OrmLayer
 
             var cmd = conn.CreateCommand();
 
-            cmd.CommandText = string.Format("SELECT * FROM {0}",typeof(T).Name);
+            cmd.CommandText = string.Format("SELECT * FROM {0}", typeof(T).Name);
             return null;
         }
 

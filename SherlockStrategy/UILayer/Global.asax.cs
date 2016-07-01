@@ -13,6 +13,8 @@ namespace UILayer
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            BusinessLayer.IoC.Castle.Initialize();
         }
     }
 }

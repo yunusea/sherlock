@@ -1,4 +1,6 @@
-﻿using DataLayer.Model;
+﻿using BusinessLayer;
+using BusinessLayer.Business;
+using DataLayer.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,22 +17,20 @@ namespace UILayer.Controllers
             return View();
         }
 
-        public JsonResult SaveUsers(List<User> Users)
+        public ActionResult SaveUser(User Entity)
         {
-            //try
-            //{
-            //    using (webApiDataContext dbContext = new webApiDataContext())
-            //    {
-            //        dbContext.Sites.AddRange(_sites);
-            //        dbContext.SaveChanges();
-            //    }
-            //    return GetSites();
-            //}
-            //catch (Exception ex)
-            //{
-            //    return Json(ex.Message);
-            //}
-            return null;
+            try
+            {
+                var user = new UserBusiness();
+
+                user.AddUser(Entity);
+
+                return RedirectToAction("SingUp", "Account");
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
+            }
         }
     }
 }

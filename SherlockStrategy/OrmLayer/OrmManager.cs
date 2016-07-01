@@ -2,11 +2,11 @@
 
 namespace OrmLayer
 {
-    public class DataManager<T> where T : class
+    public class OrmManager<T> where T : class
     {
         private IDbOrm<T> _DataLayer = null;
 
-        public DataManager(string ConnectionType, string ConnectionString)
+        public OrmManager(string ConnectionType, string ConnectionString)
         {
             if (_DataLayer == null)
             {

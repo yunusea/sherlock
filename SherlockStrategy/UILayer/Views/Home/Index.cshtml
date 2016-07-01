@@ -1,4 +1,19 @@
-﻿
-<h2>Index</h2>
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <script src="~/scripts/angular.min.js"></script>
+    <script src="~/scripts/AngularJs_Site.js"></script>
+    <title>Index</title>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body ng-controller="MainController">
+    <div>
+        {{10/2}}
+    </div>
+    <h1>{{Message}}</h1>
 
-@Html.ActionLink("Kayıt","SingUp","Account")
+</body>
+</html>

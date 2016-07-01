@@ -1,25 +1,21 @@
 ﻿(function (angular) {
-
     var app = angular.module("app", []);
-    app.controller("Controller", ["$scope", "$http", function Controller($scope, $http) {
+    app.controller("UserController", ["$scope", "$http", function UserController($scope, $http) {
+        $scope.SingUpUser = function () {
+            if ($("#btnSingUp").val() == "Kayıt Ol") {
 
-        if ($("#btnSingUp").val() == "Kayıt Ol")
-        {
-            var data = [];
-            angular.forEach($scope.Users, function (user) {
-                if (user.Id == null) {
-                    data.push(site);
-                }
-            });
+                var data = { UserName: $scope.UserName, Password: $scope.Password, EMail: $scope.EMail };
 
-            console.log("New Users data=" + JSON.stringify(data));
+                console.log("New User data=" + JSON.stringify(data));
 
-            $http.post("/Account/SaveUser", data).success(function (userList) {
-                $scope.Users = userList;
-            }).error(function (ex) {
-                console.log(ex);
-            })
+                $http.post("/Account/SaveUser", data).success(function (newUser) {
+                    $scope.data = newUser;
+                    console.log("New User data success=" + JSON.stringify(newUser));
+                }).error(function (ex) {
+                    console.log(ex);
+                });
+            }
         }
-
     }]);
+
 })(angular);

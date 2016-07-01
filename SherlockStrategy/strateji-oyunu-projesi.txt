@@ -60,4 +60,4 @@ WebApi araþtýrýlacak.
 
 
 
-Ýlk olarak WebApi Üzerinden bir kayýt sayfasý yapacaðým. 
+UI da angular ile save metodu çalýþtýðýnda controller'da bir JsonResult'a gidecek ve burada ekleme iþlemini gerçekleþtirecek business'ý çalýþtýracak.
