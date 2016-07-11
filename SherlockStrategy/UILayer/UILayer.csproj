@@ -176,9 +176,13 @@
       <Project>{D400A882-E882-485F-81A3-EA884FB90C95}</Project>
       <Name>BusinessLayer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DataLayer\DataLayer.csproj">
+    <ProjectReference Include="..\DataLayer\Models.csproj">
       <Project>{299E48E3-91DA-4047-9948-E37BA87D4569}</Project>
-      <Name>DataLayer</Name>
+      <Name>Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OrmLayer\OrmLayer.csproj">
+      <Project>{130CFD58-9CEB-4179-B9F8-E56FF1FDB551}</Project>
+      <Name>OrmLayer</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

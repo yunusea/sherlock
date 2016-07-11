@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 namespace Repositorys
 {
 
-    public class OrmAccessManager<T> : IDisposable where T : class
+    public class OrmMsSqlManager<T> : IDisposable where T : class
     {
         public OrmManager<T> _OrmManager = null;
-        public OrmAccessManager()
+        public OrmMsSqlManager()
         {
             _OrmManager = new OrmManager<T>(
                 ConfigurationManager.AppSettings["DataLayerType"].ToString(),

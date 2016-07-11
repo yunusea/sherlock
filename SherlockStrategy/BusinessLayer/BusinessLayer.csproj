@@ -59,17 +59,17 @@
       <Project>{8ED0AE71-514B-4DCC-B662-D6B3446E65C8}</Project>
       <Name>Contracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DataLayer\DataLayer.csproj">
+    <ProjectReference Include="..\DataLayer\Models.csproj">
       <Project>{299E48E3-91DA-4047-9948-E37BA87D4569}</Project>
-      <Name>DataLayer</Name>
+      <Name>Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\OrmLayer\OrmLayer.csproj">
       <Project>{130CFD58-9CEB-4179-B9F8-E56FF1FDB551}</Project>
       <Name>OrmLayer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Repositorys\Repositorys.csproj">
+    <ProjectReference Include="..\Repositorys\Repository.csproj">
       <Project>{B11B3246-0082-40D3-90CB-5AECD93E8AC8}</Project>
-      <Name>Repositorys</Name>
+      <Name>Repository</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

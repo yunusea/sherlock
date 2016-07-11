@@ -11,12 +11,7 @@ namespace Repositorys.Repository
 {
     public class UserRepository : IUserRepository<User>
     {
-        private readonly OrmAccessManager<User> Db = new OrmAccessManager<User>();
-        public User GetById(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
+        private readonly OrmMsSqlManager<User> Db = new OrmMsSqlManager<User>();
         public bool Insert(User Entity)
         {
             try
@@ -41,6 +36,11 @@ namespace Repositorys.Repository
         }
 
         public bool Update(User Entity, List<DataParameter> Criterias)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User GetById(int Id)
         {
             throw new NotImplementedException();
         }

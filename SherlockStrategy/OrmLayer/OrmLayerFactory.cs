@@ -7,8 +7,8 @@ namespace OrmLayer
         public static IDbOrm<T> Create(string DataLayerType, string ConnectionString)
         {
             IDbOrm<T> dataLayer = null;
-            Type T = Type.GetType(DataLayerType);
-            object objectHandle = Activator.CreateInstance(T, ConnectionString);
+            Type X = Type.GetType(DataLayerType);
+            object objectHandle = Activator.CreateInstance(X, ConnectionString);
             object obj = objectHandle;
             if (obj != null)
             {
