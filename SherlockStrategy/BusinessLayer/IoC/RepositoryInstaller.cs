@@ -12,7 +12,7 @@ namespace BusinessLayer.IoC
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            container.Register(Component.For<IUserRepository<User>>().ImplementedBy<UserRepository>().LifeStyle.Singleton);
+            container.Register(Component.For<IUserRepository>().ImplementedBy<UserRepository>().LifeStyle.Singleton);
         }
     }
 }

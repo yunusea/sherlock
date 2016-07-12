@@ -1,6 +1,7 @@
 ﻿(function (angular) {
     var app = angular.module("app", []);
     app.controller("UserController", ["$scope", "$http", function UserController($scope, $http) {
+        //Kayıt ekleme işleminin yapıldığı kısım
         $scope.SingUpUser = function () {
             if ($("#btnSingUp").val() == "Kayıt Ol") {
 
@@ -15,7 +16,22 @@
                     console.log(ex);
                 });
             }
-        }
+        };
+
+
+        $http.get("/Account/GetUserList").success(function (data) {
+            console.log("GetSites data=" + JSON.stringify(data));
+            $scope.UserList = data;
+        }).error(function (ex) {
+            console.log(ex);
+        });
+        
+
+        $scope.UserList = [];
+        angular.forEach(list, function (item) {
+            $scope.UserList.push(item);
+        });
+
     }]);
 
 })(angular);

@@ -9,30 +9,32 @@ using OrmLayer;
 
 namespace Repositorys.Repository
 {
-    public class UserRepository : IUserRepository<User>
+    public class UserRepository : IUserRepository
     {
-        private readonly OrmAccessManager<User> Db = new OrmAccessManager<User>();
-        public User GetById(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Insert(User Entity)
+        private readonly OrmMsSqlManager Db = new OrmMsSqlManager();
+        public bool Insert(object Entity)
         {
             try
             {
                 Db.Insert(Entity);
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }
         }
 
-        public IEnumerable<User> List()
+        public IEnumerable<object> List(object Entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return Db.AllList(Entity);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
         public bool StatusChange(bool Status)
@@ -40,7 +42,12 @@ namespace Repositorys.Repository
             throw new NotImplementedException();
         }
 
-        public bool Update(User Entity, List<DataParameter> Criterias)
+        public bool Update(object Entity, List<DataParameter> Criterias)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object GetById(int Id)
         {
             throw new NotImplementedException();
         }

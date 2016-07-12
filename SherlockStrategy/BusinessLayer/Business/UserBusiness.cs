@@ -11,12 +11,18 @@ namespace BusinessLayer.Business
 {
     public class UserBusiness
     {
-        public void AddUser(User entity)
+        public void AddUser(User Entity)
         {
-            IoC.Castle.Resolve<IUserRepository<User>>().Insert(entity);
+            IoC.Castle.Resolve<IUserRepository>().Insert(Entity);
         }
 
-        public void UpdateAdd(User entity, List<DataParameter> criteriasList)
+        public IEnumerable<object> GetAllUserList()
+        {
+            var entity = new User();
+            return IoC.Castle.Resolve<IUserRepository>().List(entity);
+        }
+
+        public void UpdateAdd(User Entity, List<DataParameter> criteriasList)
         {
 
         }

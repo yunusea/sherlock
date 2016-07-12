@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace OrmLayer.Providers
 {
-    public class MsAccess<T> : IDbOrm<T> where T : class
+    public class MsAccess// : IDbOrm
     {
-
+        
         OleDbConnection conn = null;
         string _ConnectionString;
 
@@ -19,78 +19,78 @@ namespace OrmLayer.Providers
             conn = new OleDbConnection(_ConnectionString);
         }
 
-        public void Insert(T entity)
-        {
-            //SELECT * FROM table_name (column_name)values(parameter_name)
+        //public void Insert(object entity)
+        //{
+        //    //SELECT * FROM table_name (column_name)values(parameter_name)
 
-            var cmd = conn.CreateCommand();
+        //    var cmd = conn.CreateCommand();
 
-            List<string> columnList = new List<string>();
-            List<string> parameterList = new List<string>();
-            foreach (var property in typeof(T).GetProperties())
-            {
-                columnList.Add(property.Name);
+        //    List<string> columnList = new List<string>();
+        //    List<string> parameterList = new List<string>();
+        //    foreach (var property in typeof(object).GetProperties())
+        //    {
+        //        columnList.Add(property.Name);
 
-                var parameterName = string.Format("@{0}", property.Name);
-                parameterList.Add(parameterName);
+        //        var parameterName = string.Format("@{0}", property.Name);
+        //        parameterList.Add(parameterName);
 
-                cmd.Parameters.AddWithValue(parameterName, property.GetValue(entity));
-            }
+        //        cmd.Parameters.AddWithValue(parameterName, property.GetValue(entity));
+        //    }
 
-            string columnsPart = string.Join(", ", columnList);
-            string parametersPart = string.Join(", ", parameterList);
-            cmd.CommandText = string.Format("INSERT INTO {0} ({1}) VALUES ({2})", typeof(T).Name, columnsPart, parametersPart);
+        //    string columnsPart = string.Join(", ", columnList);
+        //    string parametersPart = string.Join(", ", parameterList);
+        //    cmd.CommandText = string.Format("INSERT INTO {0} ({1}) VALUES ({2})", typeof(object).Name, columnsPart, parametersPart);
 
-            conn.Open();
-            cmd.ExecuteNonQuery();
-            conn.Close();
-            conn.Dispose();
+        //    conn.Open();
+        //    cmd.ExecuteNonQuery();
+        //    conn.Close();
+        //    conn.Dispose();
 
-        }
+        //}
 
-        public void Update(T entity, List<DataParameter> Criterias)
-        {
-            //UPDATE table_name SET column_name=@parameter_name WHERE criterias=@criter
+        //public void Update(object entity, List<DataParameter> Criterias)
+        //{
+        //    //UPDATE table_name SET column_name=@parameter_name WHERE criterias=@criter
 
-            var cmd = conn.CreateCommand();
+        //    var cmd = conn.CreateCommand();
 
-            List<string> setList = new List<string>();
-            List<string> parameterList = new List<string>();
-            foreach (var property in typeof(T).GetProperties())
-            {
-                var setName = string.Format("{0}=@{0}, ", property.Name);
-                setList.Add(setName);
-                var parameterName = string.Format("@{0}", property.Name);
-                parameterList.Add(parameterName);
+        //    List<string> setList = new List<string>();
+        //    List<string> parameterList = new List<string>();
+        //    foreach (var property in typeof(object).GetProperties())
+        //    {
+        //        var setName = string.Format("{0}=@{0}, ", property.Name);
+        //        setList.Add(setName);
+        //        var parameterName = string.Format("@{0}", property.Name);
+        //        parameterList.Add(parameterName);
 
-                cmd.Parameters.AddWithValue(parameterName, property.GetValue(entity));
-            }
+        //        cmd.Parameters.AddWithValue(parameterName, property.GetValue(entity));
+        //    }
 
-            List<string> criteriasList = new List<string>();
-            foreach (var c in Criterias)
-            {
-                var criteriasName = string.Format("{0}=@{0}", c.Name);
-                criteriasList.Add(criteriasName);
-            }
+        //    List<string> criteriasList = new List<string>();
+        //    foreach (var c in Criterias)
+        //    {
+        //        var criteriasName = string.Format("{0}=@{0}", c.Name);
+        //        criteriasList.Add(criteriasName);
+        //    }
 
-            cmd.CommandText = string.Format("UPDATE {0} SET {1} WHERE {2}", typeof(T).Name, setList, criteriasList);
-            cmd.ExecuteNonQuery();
+        //    cmd.CommandText = string.Format("UPDATE {0} SET {1} WHERE {2}", typeof(object).Name, setList, criteriasList);
+        //    cmd.ExecuteNonQuery();
 
-        }
+        //}
 
-        public IEnumerable<T> SelectDataList()
-        {
-            //SELECT * FROM table_name
+        //public IEnumerable<object> SelectDataList()
+        //{
+        //    //SELECT * FROM table_name
 
-            var cmd = conn.CreateCommand();
+        //    var cmd = conn.CreateCommand();
 
-            cmd.CommandText = string.Format("SELECT * FROM {0}", typeof(T).Name);
-            return null;
-        }
+        //    cmd.CommandText = string.Format("SELECT * FROM {0}", typeof(object).Name);
+        //    return null;
+        //}
 
-        public void Delete(T entity)
-        {
-            throw new NotImplementedException();
-        }
+        //public void Delete(object entity)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

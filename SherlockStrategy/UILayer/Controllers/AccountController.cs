@@ -17,12 +17,30 @@ namespace UILayer.Controllers
             return View();
         }
 
+        public JsonResult GetUserList()
+        {
+            try
+            {
+                var user = new UserBusiness();
+
+                var _listSites = user.GetAllUserList();
+
+                return Json(_listSites, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
+            }
+        }
+
         public ActionResult SaveUser(User Entity)
         {
             try
             {
                 var user = new UserBusiness();
 
+                Entity.Rol = 1;
+                Entity.Status = false;
                 user.AddUser(Entity);
 
                 return RedirectToAction("SingUp", "Account");

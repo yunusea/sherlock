@@ -6,5 +6,15 @@
     <input type="password" id="Password" ng-model="Password" placeholder="Password"/>
     <input type="text" id="EMail" ng-model="EMail" placeholder="E-Mail"/>
     <input type="submit" value="Kayıt Ol" data-ng-click="SingUpUser()" id="btnSingUp" />
+
+    <div class="clearfix"></div>
+    <div>
+        <h2>Listele</h2>
+        <ul ng-repeat="User in UserList">
+            <li>{{UserName}}</li>
+            <li>{{Email}}</li>
+        </ul>
+    </div>
 </div>
 <div class="clearfix"></div>
+

@@ -11,7 +11,7 @@ namespace UILayer.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("SingUp", "Account");
         }
     }
 }
