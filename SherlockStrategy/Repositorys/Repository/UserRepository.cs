@@ -12,8 +12,13 @@ namespace Repositorys.Repository
 {
     public class UserRepository : IUserRepository
     {
+<<<<<<< HEAD
         private readonly OrmMsSqlManager Db = new OrmMsSqlManager();
         public bool Insert(object Entity)
+=======
+        private readonly OrmMsSqlManager<User> Db = new OrmMsSqlManager<User>();
+        public bool Insert(User Entity)
+>>>>>>> 6012b2a54b7483448f8dd89c0fe36b5da31ceb29
         {
             try
             {
@@ -53,6 +58,7 @@ namespace Repositorys.Repository
             throw new NotImplementedException();
         }
 
+<<<<<<< HEAD
         public bool Delete(object Entity)
         {
             try
@@ -64,6 +70,11 @@ namespace Repositorys.Repository
             {
                 return false;
             }
+=======
+        public User GetById(int Id)
+        {
+            throw new NotImplementedException();
+>>>>>>> 6012b2a54b7483448f8dd89c0fe36b5da31ceb29
         }
     }
 }

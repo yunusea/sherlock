@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,12 +9,12 @@ using System.Threading.Tasks;
 namespace Repositorys
 {
 
-    public class OrmMsSqlManager : IDisposable
+    public class OrmMsSqlManager<T> : IDisposable where T : class
     {
-        public OrmManager _OrmManager = null;
+        public OrmManager<T> _OrmManager = null;
         public OrmMsSqlManager()
         {
-            _OrmManager = new OrmManager(
+            _OrmManager = new OrmManager<T>(
                 ConfigurationManager.AppSettings["DataLayerType"].ToString(),
                 ConfigurationManager.ConnectionStrings["SherlockDbContext"].ToString());
         }
@@ -26,30 +25,14 @@ namespace Repositorys
             GC.Collect();
         }
 
-        public void Insert(object Entity)
+        public void Insert(T entity)
         {
-            _OrmManager.Insert(Entity);
-        }
-        public void Delete(object Entity)
-        {
-            _OrmManager.Delete(Entity);
+            _OrmManager.Insert(entity);
         }
 
-        public DataTable AllList(object entity)
+        public void Update(T entity, List<DataParameter> criterias)
         {
-            try
-            {
-                return _OrmManager.AllList(entity);
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
-
-        public void Update(object Entity, List<DataParameter> criterias)
-        {
-            _OrmManager.Update(Entity, criterias);
+            _OrmManager.Update(entity, criterias);
         }
     }
 }
