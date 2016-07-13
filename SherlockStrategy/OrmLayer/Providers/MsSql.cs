@@ -60,17 +60,15 @@ namespace OrmLayer.Providers
             if (conn.State != ConnectionState.Closed)
             {
                 conn.Close();
-                conn.Dispose();
             }
         }
 
-        public IEnumerable<object> AllList(object entity)
+        public DataTable AllList(object entity)
         {
             //SELECT * FROM table_name
 
             DataTable dt = new DataTable();
 
-            List<object> list = new List<object>();
             try
             {
                 Type myType = entity.GetType();
@@ -78,18 +76,15 @@ namespace OrmLayer.Providers
 
                 var cmd = conn.CreateCommand();
 
-                conn.Open();
+                if (conn.State != ConnectionState.Open)
+                {
+                    conn.Open();
+                }
 
                 cmd.CommandText = string.Format("SELECT * FROM [{0}]", myType.Name);
 
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 da.Fill(dt);
-
-                list.Add(dt.AsEnumerable().ToList());
-
-
-                conn.Close();
-                conn.Dispose();
 
             }
             catch (Exception ex)
@@ -98,13 +93,44 @@ namespace OrmLayer.Providers
                 throw;
             }
 
-            return list;
+            return dt;
 
         }
 
         public void Delete(object entity)
         {
-            throw new NotImplementedException();
+            //DELETE FROM table_name WHERE col_name=entityvalue
+
+            Type myType = entity.GetType();
+            IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
+
+            var cmd = conn.CreateCommand();
+
+            List<string> columnList = new List<string>();
+            List<object> ValuesList = new List<object>();
+            foreach (var property in props)
+            {
+                if (property.GetCustomAttributes(true).OfType<KeyAttribute>().Any())
+                {
+                    columnList.Add(property.Name);
+                    ValuesList.Add(property.GetValue(entity));
+                }
+
+            }
+
+            string columnsPart = string.Join(",", columnList);
+            string parametersPart = string.Join(",", ValuesList);
+            cmd.CommandText = string.Format("DELETE FROM [{0}] WHERE {1}={2}", myType.Name, columnsPart, parametersPart);
+
+            if (conn.State != ConnectionState.Open)
+            {
+                conn.Open();
+            }
+            cmd.ExecuteNonQuery();
+            if (conn.State != ConnectionState.Closed)
+            {
+                conn.Close();
+            }
         }
 
         public void Update(object entity, List<DataParameter> Criterias)

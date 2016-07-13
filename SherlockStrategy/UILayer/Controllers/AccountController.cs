@@ -23,9 +23,29 @@ namespace UILayer.Controllers
             {
                 var user = new UserBusiness();
 
-                var _listSites = user.GetAllUserList();
+                //var _listUsers = GetUsers();
+                var _listUsers = user.GetAllUserList();
 
-                return Json(_listSites, JsonRequestBehavior.AllowGet);
+                var result = Json(_listUsers, JsonRequestBehavior.AllowGet);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
+            }
+        }
+
+        public ActionResult DeleteUser(User Entity)
+        {
+            try
+            {
+                var user = new UserBusiness();
+
+                
+                user.DeleteUser(Entity);
+                
+                return RedirectToAction("GetUserList", "Account");
             }
             catch (Exception ex)
             {

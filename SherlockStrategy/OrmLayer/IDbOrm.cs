@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 
 namespace OrmLayer
 {
@@ -7,6 +8,6 @@ namespace OrmLayer
         void Insert(object entity);
         void Update(object entity, List<DataParameter> Criterias);
         void Delete(object entity);
-        IEnumerable<object> AllList(object entity);
+        DataTable AllList(object entity);
     }
 }

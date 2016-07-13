@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace OrmLayer
 {
@@ -19,8 +20,12 @@ namespace OrmLayer
         {
             _DataLayer.Insert(Entity);
         }
+        public void Delete(object Entity)
+        {
+            _DataLayer.Delete(Entity);
+        }
 
-        public IEnumerable<object> AllList(object entity)
+        public DataTable AllList(object entity)
         {
             try
             {

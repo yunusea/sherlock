@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,8 +30,12 @@ namespace Repositorys
         {
             _OrmManager.Insert(Entity);
         }
+        public void Delete(object Entity)
+        {
+            _OrmManager.Delete(Entity);
+        }
 
-        public IEnumerable<object> AllList(object entity)
+        public DataTable AllList(object entity)
         {
             try
             {

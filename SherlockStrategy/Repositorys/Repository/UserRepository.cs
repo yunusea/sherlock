@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OrmLayer;
+using System.Data;
 
 namespace Repositorys.Repository
 {
@@ -25,7 +26,7 @@ namespace Repositorys.Repository
             }
         }
 
-        public IEnumerable<object> List(object Entity)
+        public DataTable List(object Entity)
         {
             try
             {
@@ -50,6 +51,19 @@ namespace Repositorys.Repository
         public object GetById(int Id)
         {
             throw new NotImplementedException();
+        }
+
+        public bool Delete(object Entity)
+        {
+            try
+            {
+                Db.Delete(Entity);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }
