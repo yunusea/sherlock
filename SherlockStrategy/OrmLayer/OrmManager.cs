@@ -1,25 +1,47 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 
 namespace OrmLayer
 {
-    public class OrmManager<T> where T : class
+    public class OrmManager
     {
-        private IDbOrm<T> _DataLayer = null;
+        private IDbOrm _DataLayer = null;
 
         public OrmManager(string ConnectionType, string ConnectionString)
         {
             if (_DataLayer == null)
             {
-                _DataLayer = OrmLayerFactory<T>.Create(ConnectionType, ConnectionString);
+                _DataLayer = OrmLayerFactory.Create(ConnectionType, ConnectionString);
             }
         }
 
-        public void Insert(T Entity)
+        public void Insert(object Entity)
         {
             _DataLayer.Insert(Entity);
         }
+        public void Delete(object Entity)
+        {
+            _DataLayer.Delete(Entity);
+        }
+        public DataTable GetByCriterias(string TableName, string CriteriasText)
+        {
+            return _DataLayer.GetByCriterias(TableName, CriteriasText);
+        }
 
-        public void Update(T Entity, List<DataParameter> Criterias)
+        public DataTable AllList(object entity)
+        {
+            try
+            {
+                return _DataLayer.AllList(entity);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public void Update(object Entity, List<DataParameter> Criterias)
         {
             _DataLayer.Update(Entity, Criterias);
         }

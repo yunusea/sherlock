@@ -1,17 +1,19 @@
 ﻿using OrmLayer;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Contracts
 {
-    public interface IBaseRepository<T> where T : class
+    public interface IBaseRepository
     {
-        bool Insert(T Entity);
-        bool Update(T Entity, List<DataParameter> Criterias);
-        IEnumerable<T> List();
-        T GetById(int Id);
+        bool Insert(object Entity);
+        bool Update(object Entity, List<DataParameter> Criterias);
+        DataTable List(object Entity);
+        DataTable GetByCriterias(string TableName, string CriteriasText);
+        bool Delete(object Entity);
     }
 }

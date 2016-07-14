@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Contracts
 {
-    public interface IUserRepository<T> : IBaseRepository<T> where T : class
+    public interface IUserRepository : IBaseRepository
     {
         bool StatusChange(bool Status);
     }

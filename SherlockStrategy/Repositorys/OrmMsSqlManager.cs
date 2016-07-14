@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,12 +10,12 @@ using System.Threading.Tasks;
 namespace Repositorys
 {
 
-    public class OrmMsSqlManager<T> : IDisposable where T : class
+    public class OrmMsSqlManager : IDisposable
     {
-        public OrmManager<T> _OrmManager = null;
+        public OrmManager _OrmManager = null;
         public OrmMsSqlManager()
         {
-            _OrmManager = new OrmManager<T>(
+            _OrmManager = new OrmManager(
                 ConfigurationManager.AppSettings["DataLayerType"].ToString(),
                 ConfigurationManager.ConnectionStrings["SherlockDbContext"].ToString());
         }
@@ -25,14 +26,33 @@ namespace Repositorys
             GC.Collect();
         }
 
-        public void Insert(T entity)
+        public void Insert(object Entity)
         {
-            _OrmManager.Insert(entity);
+            _OrmManager.Insert(Entity);
+        }
+        public void Delete(object Entity)
+        {
+            _OrmManager.Delete(Entity);
+        }
+        public DataTable GetByCriterias(string TableName, string CriteriasText)
+        {
+            return _OrmManager.GetByCriterias(TableName, CriteriasText);
+        }
+        public DataTable AllList(object entity)
+        {
+            try
+            {
+                return _OrmManager.AllList(entity);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
-        public void Update(T entity, List<DataParameter> criterias)
+        public void Update(object Entity, List<DataParameter> criterias)
         {
-            _OrmManager.Update(entity, criterias);
+            _OrmManager.Update(Entity, criterias);
         }
     }
 }

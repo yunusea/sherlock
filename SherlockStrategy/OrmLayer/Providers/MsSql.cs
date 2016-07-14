@@ -1,13 +1,17 @@
-﻿using System;
+﻿using Models.Model;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace OrmLayer.Providers
 {
-    public class MsSql<T> : IDbOrm<T> where T : class
+    public class MsSql : IDbOrm
     {
         SqlConnection conn = null;
         string _ConnectionString;
@@ -18,16 +22,24 @@ namespace OrmLayer.Providers
             conn = new SqlConnection(_ConnectionString);
         }
 
-        public void Insert(T entity)
+        public void Insert(object entity)
         {
             //SELECT * FROM table_name (column_name)values(parameter_name)
+
+            Type myType = entity.GetType();
+            IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
 
             var cmd = conn.CreateCommand();
 
             List<string> columnList = new List<string>();
             List<string> parameterList = new List<string>();
-            foreach (var property in typeof(T).GetProperties())
+            foreach (var property in props)
             {
+                if (property.GetCustomAttributes(true).OfType<KeyAttribute>().Any())
+                {
+                    continue;
+                }
+
                 columnList.Add(property.Name);
 
                 var parameterName = string.Format("@{0}", property.Name);
@@ -36,18 +48,92 @@ namespace OrmLayer.Providers
                 cmd.Parameters.AddWithValue(parameterName, property.GetValue(entity));
             }
 
-            string columnsPart = string.Join(", ", columnList);
-            string parametersPart = string.Join(", ", parameterList);
-            cmd.CommandText = string.Format("INSERT INTO {0} ({1}) VALUES ({2})", typeof(T).Name, columnsPart, parametersPart);
+            string columnsPart = string.Join(",", columnList);
+            string parametersPart = string.Join(",", parameterList);
+            cmd.CommandText = string.Format("INSERT INTO [{0}] ({1}) VALUES ({2})", myType.Name, columnsPart, parametersPart);
 
-            conn.Open();
+            if (conn.State != ConnectionState.Open)
+            {
+                conn.Open();
+            }
             cmd.ExecuteNonQuery();
-            conn.Close();
-            conn.Dispose();
+            if (conn.State != ConnectionState.Closed)
+            {
+                conn.Close();
+            }
+        }
+
+        public DataTable AllList(object entity)
+        {
+            //SELECT * FROM table_name
+
+            DataTable dt = new DataTable();
+
+            try
+            {
+                Type myType = entity.GetType();
+                IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
+
+                var cmd = conn.CreateCommand();
+
+                if (conn.State != ConnectionState.Open)
+                {
+                    conn.Open();
+                }
+
+                cmd.CommandText = string.Format("SELECT * FROM [{0}]", myType.Name);
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                throw;
+            }
+
+            return dt;
 
         }
 
-        public void Update(T entity, List<DataParameter> Criterias)
+        public void Delete(object entity)
+        {
+            //DELETE FROM table_name WHERE col_name=entityvalue
+
+            Type myType = entity.GetType();
+            IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
+
+            var cmd = conn.CreateCommand();
+
+            List<string> columnList = new List<string>();
+            List<object> ValuesList = new List<object>();
+            foreach (var property in props)
+            {
+                if (property.GetCustomAttributes(true).OfType<KeyAttribute>().Any())
+                {
+                    columnList.Add(property.Name);
+                    ValuesList.Add(property.GetValue(entity));
+                }
+
+            }
+
+            string columnsPart = string.Join(",", columnList);
+            string parametersPart = string.Join(",", ValuesList);
+            cmd.CommandText = string.Format("DELETE FROM [{0}] WHERE {1}={2}", myType.Name, columnsPart, parametersPart);
+
+            if (conn.State != ConnectionState.Open)
+            {
+                conn.Open();
+            }
+            cmd.ExecuteNonQuery();
+            if (conn.State != ConnectionState.Closed)
+            {
+                conn.Close();
+            }
+        }
+
+        public void Update(object entity, List<DataParameter> Criterias)
         {
             //UPDATE table_name SET column_name=@parameter_name WHERE criterias=@criter
 
@@ -55,7 +141,7 @@ namespace OrmLayer.Providers
 
             List<string> setList = new List<string>();
             List<string> parameterList = new List<string>();
-            foreach (var property in typeof(T).GetProperties())
+            foreach (var property in typeof(object).GetProperties())
             {
                 var setName = string.Format("{0}=@{0}, ", property.Name);
                 setList.Add(setName);
@@ -72,24 +158,24 @@ namespace OrmLayer.Providers
                 criteriasList.Add(criteriasName);
             }
 
-            cmd.CommandText = string.Format("UPDATE {0} SET {1} WHERE {2}", typeof(T).Name, setList, criteriasList);
+            cmd.CommandText = string.Format("UPDATE {0} SET {1} WHERE {2}", typeof(object).Name, setList, criteriasList);
             cmd.ExecuteNonQuery();
 
         }
 
-        public IEnumerable<T> SelectDataList()
+        public DataTable GetByCriterias(string TableName, string CriteriasText)
         {
-            //SELECT * FROM table_name
+            //SELECT * FROM table_name WHERE col_name=entityvalue
+            DataTable dt = new DataTable();
 
             var cmd = conn.CreateCommand();
+            
+            cmd.CommandText = string.Format("SELECT * FROM [{0}] WHERE {1}", TableName, CriteriasText);
+            
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            da.Fill(dt);
 
-            cmd.CommandText = string.Format("SELECT * FROM {0}", typeof(T).Name);
-            return null;
-        }
-
-        public void Delete(T entity)
-        {
-            throw new NotImplementedException();
+            return dt;
         }
     }
 }

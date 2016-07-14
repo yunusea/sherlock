@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 
 namespace OrmLayer
 {
-    public interface IDbOrm<T> where T : class
+    public interface IDbOrm
     {
-        void Insert(T entity);
-        void Update(T entity, List<DataParameter> Criterias);
-        void Delete(T entity);
-        IEnumerable<T> SelectDataList();
+        void Insert(object entity);
+        void Update(object entity, List<DataParameter> Criterias);
+        void Delete(object entity);
+        DataTable AllList(object entity);
+        DataTable GetByCriterias(string TableName, string CriteriasText);
     }
 }

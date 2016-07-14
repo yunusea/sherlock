@@ -1,33 +1,41 @@
 ﻿using Contracts;
-using DataLayer.Model;
+using Models.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OrmLayer;
+using System.Data;
 
 namespace Repositorys.Repository
 {
-    public class UserRepository : IUserRepository<User>
+    public class UserRepository : IUserRepository
     {
-        private readonly OrmMsSqlManager<User> Db = new OrmMsSqlManager<User>();
-        public bool Insert(User Entity)
+        private readonly OrmMsSqlManager Db = new OrmMsSqlManager();
+        public bool Insert(object Entity)
         {
             try
             {
                 Db.Insert(Entity);
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }
         }
 
-        public IEnumerable<User> List()
+        public DataTable List(object Entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return Db.AllList(Entity);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
         public bool StatusChange(bool Status)
@@ -35,14 +43,34 @@ namespace Repositorys.Repository
             throw new NotImplementedException();
         }
 
-        public bool Update(User Entity, List<DataParameter> Criterias)
+        public bool Update(object Entity, List<DataParameter> Criterias)
         {
             throw new NotImplementedException();
         }
 
-        public User GetById(int Id)
+        public DataTable GetByCriterias(string TableName, string CriteriasText)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return Db.GetByCriterias(TableName, CriteriasText);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public bool Delete(object Entity)
+        {
+            try
+            {
+                Db.Delete(Entity);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }

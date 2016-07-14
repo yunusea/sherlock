@@ -2,19 +2,19 @@
 
 namespace OrmLayer
 {
-    public class OrmLayerFactory<T> where T : class
+    public class OrmLayerFactory
     {
-        public static IDbOrm<T> Create(string DataLayerType, string ConnectionString)
+        public static IDbOrm Create(string DataLayerType, string ConnectionString)
         {
-            IDbOrm<T> dataLayer = null;
-            Type X = Type.GetType(DataLayerType);
-            object objectHandle = Activator.CreateInstance(X, ConnectionString);
+            IDbOrm dataLayer = null;
+            Type T = Type.GetType(DataLayerType);
+            object objectHandle = Activator.CreateInstance(T, ConnectionString);
             object obj = objectHandle;
             if (obj != null)
             {
-                if (obj is IDbOrm<T>)
+                if (obj is IDbOrm)
                 {
-                    dataLayer = (IDbOrm<T>)obj;
+                    dataLayer = (IDbOrm)obj;
                 }
                 else
                 {

@@ -1,7 +1,10 @@
-﻿namespace DataLayer.Model
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Models.Model
 {
     public class User
     {
+        [Key]
         public int Id { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
