@@ -16,63 +16,36 @@ namespace UILayer.Controllers
             return View();
         }
 
-        public JsonResult GetUserList()
+        public JsonResult Login(string UserName, string Password)
         {
             try
             {
                 var user = new UserBusiness();
-
-                var _listUsers = user.GetAllUserList();
-
-                var result = Json(_listUsers, JsonRequestBehavior.AllowGet);
-
-                return result;
-            }
-            catch (Exception ex)
-            {
-                return Json(ex.Message);
-            }
-        }
-
-        public ActionResult Login(string UserName, string Password)
-        {
-            try
-            {
-                var user = new UserBusiness();
-               
+             
+                //Kullanıcı giriş bilgilerini girdi ve giriş yap dedi.
                 var _loginUser = user.GetLoginUser(UserName,Password);
 
-
-                if (_loginUser != null)
+                //giriş yap butonuna bastıktan sonra kullanıcının bilgisi döndü
+                if (_loginUser == null)
                 {
-                    Session["Account"] = _loginUser;
-                    Session["AccountId"] = _loginUser.Id;
-                    Session["AccountRol"] = _loginUser.Rol;
-
-                    return RedirectToAction("Index", "Home");
+                    var message = "Giriş işlemi başarılı değil !";
+                    return Json(message,JsonRequestBehavior.AllowGet);
                 }
-                else
+
+                if (_loginUser.Status == false)
                 {
-                    var hata = "Giriş işlemi başarılı değil !";
-                    return View(hata);
+                    var message = "Giriş işlemi yapabilmeniz için yönetici tarafından üyeliğinizin onaylanması gerekiyor !";
+                    return Json(message, JsonRequestBehavior.AllowGet);
                 }
-            }
-            catch (Exception ex)
-            {
-                return Json(ex.Message);
-            }
-        }
-        public ActionResult SaveUser(User Entity)
-        {
-            try
-            {
-                var user = new UserBusiness();
 
-                Entity.Rol = 1;
-                Entity.Status = false;
-                user.AddUser(Entity);
+                //Giriş yapan kullanıcının kaydı olduğu için giriş işlemi başarılı oldu.
+                Session["Account"] = _loginUser;
+                Session["AccountId"] = _loginUser.Id;
+                Session["AccountRol"] = _loginUser.Rol;
 
-                return RedirectToAction("SingUp", "Account");
+                //Giriş başarılı olduğu için giriş yapan kullanıcının bilgileri Json il
+                return Json(_loginUser, JsonRequestBehavior.AllowGet);
+
             }
             catch (Exception ex)
             {
@@ -80,16 +53,14 @@ namespace UILayer.Controllers
             }
         }
 
-        public ActionResult DeleteUser(User Entity)
+        public JsonResult Logout()
         {
             try
             {
-                var user = new UserBusiness();
-
+                Session.Abandon();
+                var message = "Çıkış Yapıldı";
+                return Json(message, JsonRequestBehavior.AllowGet);
                 
-                user.DeleteUser(Entity);
-                
-                return RedirectToAction("GetUserList", "Account");
             }
             catch (Exception ex)
             {

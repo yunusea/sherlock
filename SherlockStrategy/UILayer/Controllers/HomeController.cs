@@ -12,23 +12,21 @@ namespace UILayer.Controllers
     {
         // GET: Home
         public ActionResult Index()
+
         {
             try
             {
-                if (Session["Account"] != null)
-                {
-                    var _user = new User();
-                    var _loginUserInfo = Session["Account"];
-
-
-                    return Json(_loginUserInfo, JsonRequestBehavior.AllowGet);
-                }
-                else
+                if (Session["Account"] == null)
                 {
                     return RedirectToAction("SingupAndSignin", "Account");
                 }
+                else
+                {
+                    var _loginUserInfo = Session["Account"];
+                    return View(_loginUserInfo);
+                }
             }
-            catch (Exception ex)
+            catch
             {
                 return RedirectToAction("SingupAndSignin", "Account");
             }

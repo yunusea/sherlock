@@ -1,0 +1,13 @@
+* Kayýt iþlemi sýrasýnda validationlar yapýlacak, password için confirm password eklenecek.
+
+* Login olduktan sonra kullanýcýlar Anasayfa'ya yönelendirilecek burada yönetici ise Üyeler menüsünü görebilecek.
+
+* Kayýt olan üye false olarak gelecek ve false bir üye giriþ yapamayacak
+
+* Üyeler bölümünde ki listede bir düzenleme bölümü olacak ve burada durum aktif-pasif edilebilecek.
+
+* Sözleþmeyi okudum ve kabul ediyorum alaný bulunur.
+
+* Sözleþme, admin tarafýndan deðiþtirilebileceðinden, veritabanýndan gelmesi gerekmektedir.
+
+* Unit Testler yazýlacak.

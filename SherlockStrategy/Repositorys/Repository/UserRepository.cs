@@ -43,9 +43,17 @@ namespace Repositorys.Repository
             throw new NotImplementedException();
         }
 
-        public bool Update(object Entity, List<DataParameter> Criterias)
+        public bool Update(object Entity, string Criterias)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Db.Update(Entity,Criterias);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         public DataTable GetByCriterias(string TableName, string CriteriasText)

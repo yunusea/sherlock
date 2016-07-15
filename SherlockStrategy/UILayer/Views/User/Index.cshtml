@@ -1,0 +1,19 @@
+﻿
+
+    <h1>Kullanıcı Listesi.</h1>
+
+<table class="table table-hover">
+    <tr>
+        <th>Kullanıcı Adı</th>
+        <th>E-Posta</th>
+        <th>Durum</th>
+        <th>İşlem</th>
+    </tr>
+    <tr ng-repeat="user in users">
+        <td>{{user.UserName}}</td>
+        <td>{{user.Email}}</td>
+        <td>{{user.Status}}</td>
+        <td><input type="submit" class="btn btn-default" value="Güncelle" ng-click="UpdateUser(user.Id)" /></td>
+    </tr>
+</table>
+

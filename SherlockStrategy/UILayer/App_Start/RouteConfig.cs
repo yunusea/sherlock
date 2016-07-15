@@ -13,11 +13,11 @@ namespace UILayer
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-            );
+            routes.MapRoute(name : "Anasayfa", url: "Anasayfa", defaults: new { Controller  = "Home", action = "Index"});
+            routes.MapRoute(name : "Kullanıcılar", url: "Kullanicilar", defaults: new { Controller  = "User", action = "Index"});
+            routes.MapRoute(name : "SingupAndSignin", url: "SingupAndSignin", defaults: new { Controller  = "Account", action = "SingupAndSignin" });
+
+            routes.MapRoute(name: "Default",url: "{controller}/{action}/{id}",defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional });
         }
     }
 }

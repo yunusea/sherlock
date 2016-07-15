@@ -18,6 +18,12 @@ namespace BusinessLayer.Business
             IoC.Castle.Resolve<IUserRepository>().Insert(Entity);
         }
 
+        public void UpdateUser(User Entity)
+        {
+            var criterias = "Id="+Entity.Id;
+            IoC.Castle.Resolve<IUserRepository>().Update(Entity, criterias);
+        }
+
         public User GetLoginUser(string UserName, string Password)
         {
 

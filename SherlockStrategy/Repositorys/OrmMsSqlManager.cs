@@ -50,7 +50,7 @@ namespace Repositorys
             }
         }
 
-        public void Update(object Entity, List<DataParameter> criterias)
+        public void Update(object Entity, string criterias)
         {
             _OrmManager.Update(Entity, criterias);
         }

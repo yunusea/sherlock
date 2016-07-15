@@ -41,7 +41,7 @@ namespace OrmLayer
             }
         }
 
-        public void Update(object Entity, List<DataParameter> Criterias)
+        public void Update(object Entity, string Criterias)
         {
             _DataLayer.Update(Entity, Criterias);
         }

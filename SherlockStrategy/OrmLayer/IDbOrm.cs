@@ -6,7 +6,7 @@ namespace OrmLayer
     public interface IDbOrm
     {
         void Insert(object entity);
-        void Update(object entity, List<DataParameter> Criterias);
+        void Update(object entity, string Criterias);
         void Delete(object entity);
         DataTable AllList(object entity);
         DataTable GetByCriterias(string TableName, string CriteriasText);

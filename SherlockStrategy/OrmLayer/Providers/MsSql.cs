@@ -133,7 +133,7 @@ namespace OrmLayer.Providers
             }
         }
 
-        public void Update(object entity, List<DataParameter> Criterias)
+        public void Update(object entity, string Criterias)
         {
             //UPDATE table_name SET column_name=@parameter_name WHERE criterias=@criter
 
@@ -151,14 +151,13 @@ namespace OrmLayer.Providers
                 cmd.Parameters.AddWithValue(parameterName, property.GetValue(entity));
             }
 
-            List<string> criteriasList = new List<string>();
-            foreach (var c in Criterias)
-            {
-                var criteriasName = string.Format("{0}=@{0}", c.Name);
-                criteriasList.Add(criteriasName);
-            }
 
-            cmd.CommandText = string.Format("UPDATE {0} SET {1} WHERE {2}", typeof(object).Name, setList, criteriasList);
+            cmd.CommandText = string.Format("UPDATE {0} SET {1} WHERE {2}", typeof(object).Name, setList, Criterias);
+
+            if (conn.State != ConnectionState.Open)
+            {
+                conn.Open();
+            }
             cmd.ExecuteNonQuery();
 
         }
