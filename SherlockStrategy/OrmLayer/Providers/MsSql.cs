@@ -1,4 +1,4 @@
-﻿using Models.Model;
+using Models.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -168,9 +168,9 @@ namespace OrmLayer.Providers
             DataTable dt = new DataTable();
 
             var cmd = conn.CreateCommand();
-            
+
             cmd.CommandText = string.Format("SELECT * FROM [{0}] WHERE {1}", TableName, CriteriasText);
-            
+
             SqlDataAdapter da = new SqlDataAdapter(cmd);
             da.Fill(dt);
 

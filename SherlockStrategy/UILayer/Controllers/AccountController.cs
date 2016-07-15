@@ -21,15 +21,15 @@ namespace UILayer.Controllers
             try
             {
                 var user = new UserBusiness();
-             
+
                 //Kullanıcı giriş bilgilerini girdi ve giriş yap dedi.
-                var _loginUser = user.GetLoginUser(UserName,Password);
+                var _loginUser = user.GetLoginUser(UserName, Password);
 
                 //giriş yap butonuna bastıktan sonra kullanıcının bilgisi döndü
                 if (_loginUser == null)
                 {
                     var message = "Giriş işlemi başarılı değil !";
-                    return Json(message,JsonRequestBehavior.AllowGet);
+                    return Json(message, JsonRequestBehavior.AllowGet);
                 }
 
                 if (_loginUser.Status == false)
@@ -60,7 +60,7 @@ namespace UILayer.Controllers
                 Session.Abandon();
                 var message = "Çıkış Yapıldı";
                 return Json(message, JsonRequestBehavior.AllowGet);
-                
+
             }
             catch (Exception ex)
             {

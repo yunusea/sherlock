@@ -47,7 +47,7 @@ namespace Repositorys.Repository
         {
             try
             {
-                Db.Update(Entity,Criterias);
+                Db.Update(Entity, Criterias);
                 return true;
             }
             catch (Exception ex)

@@ -1,5 +1,6 @@
 ﻿(function (angular) {
     var app = angular.module("app", []);
+<<<<<<< HEAD
     app.controller("MainController", ["$scope", "$http", "$log", "$location", function UserController($scope, $http, $log, $location) {
         $scope.loading = true;
 
@@ -15,6 +16,28 @@
         GetUsers();
        
         //Kayıt İşlemi
+=======
+    app.controller("UserController", ["$scope", "$http", "$log", function UserController($scope, $http, $log) {
+
+        $http.get("/Account/GetUserList").success(function (data) {
+            $log.info("All User Repos Data Taken!");
+            $scope.users = data;
+        }).error(function (ex) {
+            $log.info(ex);
+        })
+       
+        $scope.DeleteUser = function (Id) {
+            var data = { Id: Id};
+            $http.post("/Account/DeleteUser", data).success(function () {
+                console.log("Delete User Data Success");
+
+                }).error(function (ex) {
+                    console.log(ex);
+                })
+        };
+
+        //Kayıt ekleme işleminin yapıldığı kısım
+>>>>>>> 18615c89d86d5dc0f66dd1a2b7d6877109f0de27
         $scope.SingUpUser = function () {
 
             if ($("#btnSingUp").val() == "Kayıt Ol") {
@@ -60,6 +83,7 @@
             }
         };
 
+<<<<<<< HEAD
         //Çıkış İşlemi
         $scope.LogoutUser = function () {
 
@@ -90,6 +114,8 @@
             });
         };
 
+=======
+>>>>>>> 18615c89d86d5dc0f66dd1a2b7d6877109f0de27
     }]);
 
 })(angular);

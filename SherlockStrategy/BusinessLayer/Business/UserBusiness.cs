@@ -20,7 +20,7 @@ namespace BusinessLayer.Business
 
         public void UpdateUser(User Entity)
         {
-            var criterias = "Id="+Entity.Id;
+            var criterias = "Id=" + Entity.Id;
             IoC.Castle.Resolve<IUserRepository>().Update(Entity, criterias);
         }
 
@@ -29,7 +29,7 @@ namespace BusinessLayer.Business
 
             var criterias = "UserName='" + UserName + "' and Password='" + Password + "'";
 
-            var returnObjects = IoC.Castle.Resolve<IUserRepository>().GetByCriterias("User",criterias);
+            var returnObjects = IoC.Castle.Resolve<IUserRepository>().GetByCriterias("User", criterias);
 
             List<User> returnList = new List<User>();
             returnList = ConvertToList<User>(returnObjects);
