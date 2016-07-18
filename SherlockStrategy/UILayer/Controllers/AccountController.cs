@@ -13,11 +13,37 @@ namespace UILayer.Controllers
     {
         public ActionResult SingupAndSignin()
         {
+            if (Session["Account"] != null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
-        public JsonResult Login(string UserName, string Password)
+        public ActionResult SingupContract()
         {
+            if (Session["Account"] != null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return View();
+        }
+
+        public JsonResult GetSingupContract()
+        {
+            var contract = new UserBusiness();
+            var returnData = contract.GetContractText();
+            var ContractMessage = returnData.SingUpMessage;
+            return Json(ContractMessage, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Login(string UserName, string Password)
+        {
+            if (Session["Account"] != null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             try
             {
                 var user = new UserBusiness();
@@ -67,6 +93,5 @@ namespace UILayer.Controllers
                 return Json(ex.Message);
             }
         }
-
     }
 }

@@ -38,11 +38,6 @@ namespace Repositorys.Repository
             }
         }
 
-        public bool StatusChange(bool Status)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool Update(object Entity, string Criterias)
         {
             try
@@ -73,6 +68,31 @@ namespace Repositorys.Repository
             try
             {
                 Db.Delete(Entity);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public object FirsOrCriterias(string TableName, string CriteriasText)
+        {
+            try
+            {
+                return Db.GetByCriterias(TableName, CriteriasText);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public bool SpecialUpdate(string TableName, string SetList, string CriterList)
+        {
+            try
+            {
+                Db.SpecialUpdate(TableName, SetList, CriterList);
                 return true;
             }
             catch (Exception ex)

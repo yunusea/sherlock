@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Collections.Specialized.BitVector32;
@@ -58,7 +59,9 @@ namespace BusinessLayer.Business
                 foreach (var pro in properties)
                 {
                     if (columnNames.Contains(pro.Name))
+                    {
                         pro.SetValue(objT, row[pro.Name]);
+                    }
                 }
                 return objT;
             }).ToList();
@@ -84,6 +87,46 @@ namespace BusinessLayer.Business
         public void UpdateAdd(User Entity, List<DataParameter> criteriasList)
         {
 
+        }
+
+        public GeneralSetting GetContractText()
+        {
+            var criterias = "Id='1'";
+
+            var returnObjects = IoC.Castle.Resolve<IUserRepository>().GetByCriterias("GeneralSetting", criterias);
+
+            List<GeneralSetting> returnList = new List<GeneralSetting>();
+            returnList = ConvertToList<GeneralSetting>(returnObjects);
+
+            if (returnList.Count > 0)
+            {
+                var resultUsert = returnList.FirstOrDefault();
+
+                return resultUsert;
+            }
+            else
+            {
+                return null;
+            }
+
+        } 
+        public void ChangeStatu(User Entity)
+        {
+            try
+            {
+                Type myType = Entity.GetType();
+                IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
+
+                var criterias = "Id='" + Entity.Id + "'";
+                var setList = "Status='" + (!Entity.Status) + "'";
+                var TableName = myType.Name;
+
+                IoC.Castle.Resolve<IUserRepository>().SpecialUpdate(TableName, setList, criterias);
+            }
+            catch (Exception ex)
+            {
+                throw new NotSupportedException("Beklenmedik bir hata oluştu.",ex);
+            }
         }
     }
 }

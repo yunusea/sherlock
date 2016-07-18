@@ -52,7 +52,6 @@ namespace UILayer.Controllers
             {
                 var user = new UserBusiness();
 
-
                 user.UpdateUser(Entity);
 
                 return RedirectToAction("GetUserList", "Account");
@@ -90,7 +89,7 @@ namespace UILayer.Controllers
                 Entity.Status = false;
                 user.AddUser(Entity);
 
-                return RedirectToAction("SingUp", "Account");
+                return RedirectToAction("SingupAndSignin", "Account");
             }
             catch (Exception ex)
             {
@@ -98,5 +97,20 @@ namespace UILayer.Controllers
             }
         }
 
+        public ActionResult ChangeStatu(User Entity)
+        {
+            try
+            {
+                var user = new UserBusiness();
+
+                user.ChangeStatu(Entity);
+
+                return RedirectToAction("Index", "User");
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
+            }
+        }
     }
 }

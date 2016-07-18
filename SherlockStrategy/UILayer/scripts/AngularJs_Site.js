@@ -1,6 +1,6 @@
 ﻿(function (angular) {
     var app = angular.module("app", []);
-<<<<<<< HEAD
+
     app.controller("MainController", ["$scope", "$http", "$log", "$location", function UserController($scope, $http, $log, $location) {
         $scope.loading = true;
 
@@ -11,51 +11,45 @@
             }).error(function (ex) {
                 $log.info(ex);
             })
-        }
-
-        GetUsers();
-       
-        //Kayıt İşlemi
-=======
-    app.controller("UserController", ["$scope", "$http", "$log", function UserController($scope, $http, $log) {
-
-        $http.get("/Account/GetUserList").success(function (data) {
-            $log.info("All User Repos Data Taken!");
-            $scope.users = data;
-        }).error(function (ex) {
-            $log.info(ex);
-        })
-       
-        $scope.DeleteUser = function (Id) {
-            var data = { Id: Id};
-            $http.post("/Account/DeleteUser", data).success(function () {
-                console.log("Delete User Data Success");
-
-                }).error(function (ex) {
-                    console.log(ex);
-                })
         };
 
+        GetUsers();
+
+        function SingupContract() {
+            $http.get("/Account/GetSingupContract").success(function (data) {
+                $scope.SingupContractMessage = data;
+            }).error(function (ex) {
+                $log.info(ex);
+            })
+        };
+
+        SingupContract();
+
         //Kayıt ekleme işleminin yapıldığı kısım
->>>>>>> 18615c89d86d5dc0f66dd1a2b7d6877109f0de27
         $scope.SingUpUser = function () {
 
             if ($("#btnSingUp").val() == "Kayıt Ol") {
 
-                if ($scope.SuPassword != $scope.SuPasswordConfirm) {
-                    $scope.confirmalert = "Şifreler Eşleşmiyor !";
+                if ($scope.SuReadContract == true) {
+                    if ($scope.SuPassword != $scope.SuPasswordConfirm) {
+                        $scope.confirmalert = "Şifreler Eşleşmiyor !";
+                    }
+                    else {
+                        var data = { UserName: $scope.SuUserName, Password: $scope.SuPassword, EMail: $scope.SuEMail };
+
+                        $http.post("/User/SaveUser", data).success(function (newUser) {
+                            $scope.data = newUser;
+                            $scope.singUpMessage = "Kayıt İşlemi Başarılı Bir Şekilde Gerçekleşti !";
+                        }).error(function (ex) {
+                            console.log(ex);
+                            $scope.singUpMessage = "Kayıt işlemi sırasında beklenmedik bir hata oluştu !";
+                        });
+                        $scope.confirmalert = "";
+                    }
                 }
                 else
                 {
-                    var data = { UserName: $scope.SuUserName, Password: $scope.SuPassword, EMail: $scope.SuEMail };
-
-                    $http.post("/User/SaveUser", data).success(function (newUser) {
-                        $scope.data = newUser;
-                        $scope.singUpMessage = "Kayıt İşlemi Başarılı Bir Şekilde Gerçekleşti !";
-                    }).error(function (ex) {
-                        console.log(ex);
-                    });
-                    $scope.confirmalert = "";
+                    $scope.singUpMessage = "Merak ettin okudun, kabul et !";
                 }
             }
         };
@@ -72,8 +66,7 @@
                         console.log("Giriş Başarılı");
                         window.location = "/Anasayfa";
                     }
-                    else
-                    {
+                    else {
                         console.log(loginUser);
                         $scope.Message = loginUser;
                     }
@@ -83,25 +76,24 @@
             }
         };
 
-<<<<<<< HEAD
         //Çıkış İşlemi
         $scope.LogoutUser = function () {
 
-                $http.post("/Account/Logout").success(function () {
-                    window.location = "/SingupAndSignin";
-                }).error(function (ex) {
-                    console.log(ex);
-                });
+            $http.post("/Account/Logout").success(function () {
+                window.location = "/SingupAndSignin";
+            }).error(function (ex) {
+                console.log(ex);
+            });
         };
-        
+
         //Silme İşlemi
         $scope.DeleteUser = function (Id) {
-            var data = { Id: Id};
+            var data = { Id: Id };
             $http.post("/User/DeleteUser", data).success(function () {
                 GetUsers();
-                }).error(function (ex) {
-                    console.log(ex);
-                })
+            }).error(function (ex) {
+                console.log(ex);
+            })
         };
 
         //Kullanıcı Güncelleme İşlemi
@@ -114,8 +106,14 @@
             });
         };
 
-=======
->>>>>>> 18615c89d86d5dc0f66dd1a2b7d6877109f0de27
+        $scope.ChangeStatu = function (Id, Status) {
+            var data = { Id: Id, Status: Status };
+            $http.post("/User/ChangeStatu", data).success(function () {
+                GetUsers();
+            }).error(function (ex) {
+                console.log(ex);
+            });
+        };
     }]);
 
 })(angular);

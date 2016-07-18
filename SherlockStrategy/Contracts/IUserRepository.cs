@@ -8,6 +8,5 @@ namespace Contracts
 {
     public interface IUserRepository : IBaseRepository
     {
-        bool StatusChange(bool Status);
     }
 }

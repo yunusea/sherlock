@@ -20,10 +20,12 @@ namespace OrmLayer
         {
             _DataLayer.Insert(Entity);
         }
+
         public void Delete(object Entity)
         {
             _DataLayer.Delete(Entity);
         }
+
         public DataTable GetByCriterias(string TableName, string CriteriasText)
         {
             return _DataLayer.GetByCriterias(TableName, CriteriasText);
@@ -44,6 +46,10 @@ namespace OrmLayer
         public void Update(object Entity, string Criterias)
         {
             _DataLayer.Update(Entity, Criterias);
+        }
+        public void SpecialUpdate(string TableName, string SetList, string CriterList)
+        {
+            _DataLayer.SpecialUpdate(TableName, SetList, CriterList);
         }
     }
 }

@@ -19,13 +19,13 @@ namespace OrmLayer.Providers
         public MsSql(string ConnectionString)
         {
             _ConnectionString = ConnectionString;
-            conn = new SqlConnection(_ConnectionString);
         }
 
         public void Insert(object entity)
         {
             //SELECT * FROM table_name (column_name)values(parameter_name)
 
+            conn = new SqlConnection(_ConnectionString);
             Type myType = entity.GetType();
             IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
 
@@ -67,6 +67,7 @@ namespace OrmLayer.Providers
         {
             //SELECT * FROM table_name
 
+            conn = new SqlConnection(_ConnectionString);
             DataTable dt = new DataTable();
 
             try
@@ -86,6 +87,11 @@ namespace OrmLayer.Providers
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 da.Fill(dt);
 
+                if (conn.State != ConnectionState.Closed)
+                {
+                    conn.Close();
+                }
+
             }
             catch (Exception ex)
             {
@@ -101,6 +107,7 @@ namespace OrmLayer.Providers
         {
             //DELETE FROM table_name WHERE col_name=entityvalue
 
+            conn = new SqlConnection(_ConnectionString);
             Type myType = entity.GetType();
             IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
 
@@ -137,6 +144,7 @@ namespace OrmLayer.Providers
         {
             //UPDATE table_name SET column_name=@parameter_name WHERE criterias=@criter
 
+            conn = new SqlConnection(_ConnectionString);
             var cmd = conn.CreateCommand();
 
             List<string> setList = new List<string>();
@@ -160,19 +168,67 @@ namespace OrmLayer.Providers
             }
             cmd.ExecuteNonQuery();
 
+            if (conn.State != ConnectionState.Closed)
+            {
+                conn.Close();
+            }
+
+        }
+
+        public void SpecialUpdate(string TableName, string SetList, string CriterList)
+        {
+            //UPDATE table_name SET column_name=@parameter_name WHERE criterias=@criter
+
+            conn = new SqlConnection(_ConnectionString);
+            var cmd = conn.CreateCommand();
+
+            cmd.CommandText = string.Format("UPDATE [{0}] SET {1} WHERE {2}", TableName, SetList, CriterList);
+
+            if (conn.State != ConnectionState.Open)
+            {
+                conn.Open();
+            }
+            cmd.ExecuteNonQuery();
+
+            if (conn.State != ConnectionState.Closed)
+            {
+                conn.Close();
+            }
         }
 
         public DataTable GetByCriterias(string TableName, string CriteriasText)
         {
             //SELECT * FROM table_name WHERE col_name=entityvalue
+
+            conn = new SqlConnection(_ConnectionString);
             DataTable dt = new DataTable();
 
-            var cmd = conn.CreateCommand();
+            try
+            {
+                var cmd = conn.CreateCommand();
 
-            cmd.CommandText = string.Format("SELECT * FROM [{0}] WHERE {1}", TableName, CriteriasText);
+                cmd.CommandText = string.Format("SELECT * FROM [{0}] WHERE {1}", TableName, CriteriasText);
 
-            SqlDataAdapter da = new SqlDataAdapter(cmd);
-            da.Fill(dt);
+
+                if (conn.State != ConnectionState.Open)
+                {
+                    conn.Open();
+                }
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+
+                if (conn.State != ConnectionState.Closed)
+                {
+                    conn.Close();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                throw;
+            }
 
             return dt;
         }
