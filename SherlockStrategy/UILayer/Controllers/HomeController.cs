@@ -12,7 +12,6 @@ namespace UILayer.Controllers
     {
         // GET: Home
         public ActionResult Index()
-
         {
             try
             {

@@ -25,6 +25,35 @@ namespace BusinessLayer.Business
             IoC.Castle.Resolve<IUserRepository>().Update(Entity, criterias);
         }
 
+        public void UpdateProfile(string UserName, string Password, string NewPassword)
+        {
+
+            var criterias = "UserName='" + UserName + "' and Password='" + Password + "'";
+
+            var returnObjects = IoC.Castle.Resolve<IUserRepository>().GetByCriterias("User", criterias);
+
+            List<User> returnList = new List<User>();
+            returnList = ConvertToList<User>(returnObjects);
+
+            if (returnList.Count > 0)
+            {
+                var resultUser = returnList.FirstOrDefault();
+
+                Type myType = resultUser.GetType();
+                IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
+
+                var updateCriterias = "Id='" + resultUser.Id + "'";
+                var setList = "Password='" + NewPassword + "'";
+                var TableName = myType.Name;
+
+                IoC.Castle.Resolve<IUserRepository>().SpecialUpdate(TableName, setList, updateCriterias);
+            }
+            else
+            {
+                throw new NotSupportedException("Beklenmedik bir hata oluştu.");
+            }
+        }
+
         public User GetLoginUser(string UserName, string Password)
         {
 
@@ -83,12 +112,7 @@ namespace BusinessLayer.Business
 
             IoC.Castle.Resolve<IUserRepository>().Delete(Entity);
         }
-
-        public void UpdateAdd(User Entity, List<DataParameter> criteriasList)
-        {
-
-        }
-
+        
         public GeneralSetting GetContractText()
         {
             var criterias = "Id='1'";
@@ -110,6 +134,7 @@ namespace BusinessLayer.Business
             }
 
         } 
+
         public void ChangeStatu(User Entity)
         {
             try

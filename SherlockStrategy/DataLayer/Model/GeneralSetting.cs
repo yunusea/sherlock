@@ -11,6 +11,6 @@ namespace Models.Model
     {
         [Key]
         public int Id { get; set; }
-        public string SingUpMessage { get; set; }
+        public string ContractText { get; set; }
     }
 }

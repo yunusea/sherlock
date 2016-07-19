@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\SettingBusiness.cs" />
     <Compile Include="Business\UserBusiness.cs" />
     <Compile Include="IoC\Castle.cs" />
     <Compile Include="IoC\RepositoryInstaller.cs" />

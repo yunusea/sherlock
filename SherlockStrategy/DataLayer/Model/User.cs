@@ -12,5 +12,6 @@ namespace Models.Model
         public string Email { get; set; }
         public int Rol { get; set; }
         public bool Status { get; set; }
+        public bool SingUpContractStatus { get; set; }
     }
 }

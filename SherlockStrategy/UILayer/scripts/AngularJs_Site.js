@@ -15,6 +15,7 @@
 
         GetUsers();
 
+        //Kayıt Sözleşmesini Getir
         function SingupContract() {
             $http.get("/Account/GetSingupContract").success(function (data) {
                 $scope.SingupContractMessage = data;
@@ -24,6 +25,28 @@
         };
 
         SingupContract();
+
+        //Profil Bilgilerini Getir
+        function GetProfilInfo() {
+            $http.get("/User/GetProfilInfo").success(function (data) {
+                $scope.UserName = data.UserName;
+            }).error(function (ex) {
+                $log.console(ex);
+            });
+        }
+
+        GetProfilInfo();
+
+        //Kayıt sözleşme metni getir
+        function GetSingupContractText() {
+            $http.get("/Setting/GetContractText").success(function (data) {
+                $scope.SingUpContractText = data;
+            }).error(function (ex) {
+
+            });
+        };
+
+        GetSingupContractText();
 
         //Kayıt ekleme işleminin yapıldığı kısım
         $scope.SingUpUser = function () {
@@ -49,7 +72,7 @@
                 }
                 else
                 {
-                    $scope.singUpMessage = "Merak ettin okudun, kabul et !";
+                    $scope.singUpMessage = "Merak ettin ve okudun, kabul et !";
                 }
             }
         };
@@ -97,15 +120,39 @@
         };
 
         //Kullanıcı Güncelleme İşlemi
-        $scope.UpdateUser = function (Id) {
-            var data = { Id: Id };
-            $http.post("/User/UserUpdate", data).success(function () {
-                GetUsers();
-            }).error(function (ex) {
-                console.log(ex);
-            });
+        $scope.UpdateUserInfo = function () {
+            if ($("#btnUpdateUserInfo").val() == "Bilgileri Güncelle") {
+
+                if ($scope.NewPassword != $scope.NewPasswordConfirm) {
+                    $scope.confirmalert = "Şifreler Eşleşmiyor !";
+                }
+                else {
+                    var data = { UserName: $scope.UserName, Password: $scope.Password, NewPassword: $scope.NewPassword };
+
+                    $http.post("/User/UserUpdate", data).success(function () {
+                        window.location = "/Profil";
+                    }).error(function (ex) {
+                        console.log(ex);
+                    });
+                }
+            }
         };
 
+        //Sözleşme Metni Düzenleme
+        $scope.SettingUpdate = function () {
+            if ($("#btnSettingUpdate").val() == "Güncelle") {
+               
+                var data = { SingUpContractText: $scope.SingUpContractText };
+
+                $http.post("/Setting/ContractTextUpdate", data).success(function (data) {
+                    window.location = "/Ayarlar";
+                }).error(function (ex) {
+                    console.log(ex);
+                });
+            }
+        };
+
+        //Durum Değitir
         $scope.ChangeStatu = function (Id, Status) {
             var data = { Id: Id, Status: Status };
             $http.post("/User/ChangeStatu", data).success(function () {

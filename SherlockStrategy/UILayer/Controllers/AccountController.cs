@@ -33,7 +33,7 @@ namespace UILayer.Controllers
         {
             var contract = new UserBusiness();
             var returnData = contract.GetContractText();
-            var ContractMessage = returnData.SingUpMessage;
+            var ContractMessage = returnData.ContractText;
             return Json(ContractMessage, JsonRequestBehavior.AllowGet);
         }
 
@@ -64,10 +64,17 @@ namespace UILayer.Controllers
                     return Json(message, JsonRequestBehavior.AllowGet);
                 }
 
+                if (_loginUser.SingUpContractStatus == false)
+                {
+                    Session["SleepAccount"] = _loginUser;
+                    return RedirectToAction("SingupContractUpdateControl", "Account");
+                }
+
                 //Giriş yapan kullanıcının kaydı olduğu için giriş işlemi başarılı oldu.
                 Session["Account"] = _loginUser;
                 Session["AccountId"] = _loginUser.Id;
                 Session["AccountRol"] = _loginUser.Rol;
+
 
                 //Giriş başarılı olduğu için giriş yapan kullanıcının bilgileri Json il
                 return Json(_loginUser, JsonRequestBehavior.AllowGet);
@@ -91,6 +98,33 @@ namespace UILayer.Controllers
             catch (Exception ex)
             {
                 return Json(ex.Message);
+            }
+        }
+
+        public ActionResult SingupContractUpdateControl()
+        {
+            try
+            {
+                if (Session["Account"] == null)
+                {
+                    if (Session["SleepAccount"] != null)
+                    {
+                        var _loginUserInfo = Session["SleepAccount"];
+                        return View(_loginUserInfo);
+                    }
+                    else
+                    {
+                        return RedirectToAction("SingupAndSignin", "Account");
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("SingupAndSignin", "Account");
+                }
+            }
+            catch
+            {
+                return RedirectToAction("SingupAndSignin", "Account");
             }
         }
     }
