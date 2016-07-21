@@ -1,0 +1,37 @@
+﻿
+
+<div class="col-md-12">
+    <h2>Mesaj Yaz</h2>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-md-6">Gönderici Adı : </label>
+            <div class="col-md-6">
+                {{newSenderName}}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-6">Alıcı Adı : </label>
+            <div class="col-md-6">
+                {{newReceiverName}}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-6">Konu : </label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" ng-model="MessageTopic" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-6">Mesaj : </label>
+            <div class="col-md-6">
+                <textarea class="form-control" ng-model="MessageContent"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
+                <input type="submit" class="btn btn-block" name="SendMessage" value="Mesaj Gönder" ng-click="SendMessage()" id="btnSendMessage" />
+            </div>
+        </div>
+    </div>
+</div>

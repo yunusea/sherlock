@@ -67,7 +67,7 @@ namespace UILayer.Controllers
                 if (_loginUser.SingUpContractStatus == false)
                 {
                     Session["SleepAccount"] = _loginUser;
-                    return RedirectToAction("SingupContractUpdateControl", "Account");
+                    return Json(_loginUser, JsonRequestBehavior.AllowGet);
                 }
 
                 //Giriş yapan kullanıcının kaydı olduğu için giriş işlemi başarılı oldu.
@@ -126,6 +126,30 @@ namespace UILayer.Controllers
             {
                 return RedirectToAction("SingupAndSignin", "Account");
             }
+        }
+
+        public ActionResult SingUpContractUpdateControlChecked()
+        {
+            if (Session["SleepAccount"] == null)
+            {
+                return RedirectToAction("SingupAndSignin", "Account");
+            }
+
+            var _loginUserInfo = Session["SleepAccount"];
+
+            Session["Account"] = _loginUserInfo;
+
+            if (Session["Account"] == null)
+            {
+                return RedirectToAction("SingupAndSignin", "Account");
+            }
+
+            var propInfo = _loginUserInfo.GetType().GetProperty("Id");
+            int Id = (int)propInfo.GetValue(_loginUserInfo);
+            var user = new UserBusiness();
+            var resultUser = user.UpdateContractTextChecked(Id);
+
+            return Json(resultUser, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -42,11 +42,50 @@
             $http.get("/Setting/GetContractText").success(function (data) {
                 $scope.SingUpContractText = data;
             }).error(function (ex) {
-
+                console.log(ex);
             });
         };
 
         GetSingupContractText();
+
+        $scope.SingUpContractUpdate = function () {
+
+            if ($("#btnSingUpContractUpdate").val() == "Onaylıyorum") {
+
+                $http.post("/Account/SingUpContractUpdateControlChecked").success(function () {
+                    console.log("Giriş Başarılı");
+                    window.location = "/Anasayfa";
+                }).error(function (ex) {
+                    console.log(ex);
+                    $scope.singUpMessage = "Kayıt işlemi sırasında beklenmedik bir hata oluştu !";
+                });
+            }
+        };
+
+
+
+        $scope.GetWriteMessageData = function (data) {
+
+                $http.post("/Message/GetWriteMessageData", data).success(function (newdata) {
+                    $scope.newSenderName = newdata.SenderName;
+                    $scope.newReceiverName = newdata.ReceiverName;
+                }).error(function (ex) {
+                    console.log(ex);
+                });
+        };
+
+
+        $scope.WriteMessage = function (Id) {
+
+            if ($("#btnWriteMessage").val() == "Mesaj Yaz") {
+
+                var data = { Id: Id }
+
+                window.location = "/MesajYaz";
+                $scope.GetWriteMessageData(data);
+
+            }
+        };
 
         //Kayıt ekleme işleminin yapıldığı kısım
         $scope.SingUpUser = function () {
@@ -85,9 +124,14 @@
 
                 $http.post("/Account/Login", data).success(function (loginUser) {
                     if (loginUser.UserName == data.UserName && loginUser.Password == data.Password) {
-                        $scope.data = loginUser;
-                        console.log("Giriş Başarılı");
-                        window.location = "/Anasayfa";
+                        if (loginUser.SingUpContractStatus == false) {
+                            window.location = "/SingupContractUpdate";
+                        }
+                        else {
+                            $scope.data = loginUser;
+                            console.log("Giriş Başarılı");
+                            window.location = "/Anasayfa";
+                        }
                     }
                     else {
                         console.log(loginUser);

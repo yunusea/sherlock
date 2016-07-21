@@ -40,7 +40,6 @@ namespace BusinessLayer.Business
                 var resultUser = returnList.FirstOrDefault();
 
                 Type myType = resultUser.GetType();
-                IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
 
                 var updateCriterias = "Id='" + resultUser.Id + "'";
                 var setList = "Password='" + NewPassword + "'";
@@ -66,9 +65,9 @@ namespace BusinessLayer.Business
 
             if (returnList.Count > 0)
             {
-                var resultUsert = returnList.FirstOrDefault();
+                var resultUser = returnList.FirstOrDefault();
 
-                return resultUsert;
+                return resultUser;
             }
             else
             {
@@ -112,7 +111,7 @@ namespace BusinessLayer.Business
 
             IoC.Castle.Resolve<IUserRepository>().Delete(Entity);
         }
-        
+
         public GeneralSetting GetContractText()
         {
             var criterias = "Id='1'";
@@ -133,7 +132,7 @@ namespace BusinessLayer.Business
                 return null;
             }
 
-        } 
+        }
 
         public void ChangeStatu(User Entity)
         {
@@ -150,7 +149,60 @@ namespace BusinessLayer.Business
             }
             catch (Exception ex)
             {
-                throw new NotSupportedException("Beklenmedik bir hata oluştu.",ex);
+                throw new NotSupportedException("Beklenmedik bir hata oluştu.", ex);
+            }
+        }
+
+        public User GetUserInfo(int Id)
+        {
+            var UserTableName = "User";
+            var UserCriterList = "Id='" + Id + "'";
+            var resultUserObject = IoC.Castle.Resolve<IUserRepository>().GetByCriterias(UserTableName, UserCriterList);
+            List<User> returnList = new List<User>();
+            returnList = ConvertToList<User>(resultUserObject);
+
+            if (returnList.Count > 0)
+            {
+                var resultUser = returnList.FirstOrDefault();
+
+                return resultUser;
+            }
+            else
+            {
+                throw new NotSupportedException("Beklenmedik Bir Problem İle Karşılaşıldı");
+            }
+        }
+
+        public User UpdateContractTextChecked(int Id)
+        {
+
+            var TableName = "User";
+            var SetList = "SingUpContractStatus='True'";
+            var CriterList = "Id='" + Id + "'";
+            var resultUserUpdate = IoC.Castle.Resolve<IUserRepository>().SpecialUpdate(TableName, SetList, CriterList);
+
+            if (resultUserUpdate)
+            {
+                var UserTableName = "User";
+                var UserCriterList = "Id='" + Id + "'";
+                var resultUserObject = IoC.Castle.Resolve<IUserRepository>().GetByCriterias(UserTableName, UserCriterList);
+                List<User> returnList = new List<User>();
+                returnList = ConvertToList<User>(resultUserObject);
+
+                if (returnList.Count > 0)
+                {
+                    var resultUser = returnList.FirstOrDefault();
+
+                    return resultUser;
+                }
+                else
+                {
+                    throw new NotSupportedException("Beklenmedik Bir Problem İle Karşılaşıldı");
+                }
+            }
+            else
+            {
+                throw new NotSupportedException("Sözleşme Durum Güncellemesi Başarılı Bir Şekilde Gerçekleştirilemedi !");
             }
         }
     }
