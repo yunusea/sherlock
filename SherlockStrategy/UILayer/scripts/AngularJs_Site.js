@@ -12,7 +12,6 @@
                 $log.info(ex);
             })
         };
-
         GetUsers();
 
         //Kayıt Sözleşmesini Getir
@@ -23,7 +22,6 @@
                 $log.info(ex);
             })
         };
-
         SingupContract();
 
         //Profil Bilgilerini Getir
@@ -34,7 +32,6 @@
                 $log.console(ex);
             });
         }
-
         GetProfilInfo();
 
         //Kayıt sözleşme metni getir
@@ -45,9 +42,41 @@
                 console.log(ex);
             });
         };
-
         GetSingupContractText();
 
+        //TODO:
+        //$scope.GetWriteMessage = function (Id) {
+        //    if ($("#btnWriteMessage").val() == "Mesaj Yaz") {
+        //        var data = { Id: Id }
+        //        $http.post("/Message/GetWriteMessageData", data).success(function (resultData) {
+        //                $location.path('/MesajYaz', resultData);
+        //        }).error(function (ex) {
+        //            console.log(ex);
+        //        });
+        //    }
+        //};
+        //$scope.GoWriteMessage = function (Id) {
+        //    if ($("#btnWriteMessage").val() == "Mesaj Yaz") {
+        //        //var data = { Id: Id };
+        //        //$scope.datascope = data;
+        //        Result:
+        //            {
+        //                Id: Id
+        //            };
+        //        window.location = "/MesajYaz";
+        //    }
+        //};
+        //function GetWriteMessageData() {
+        //    var data = $location.search().Id;
+        //    $http.post("/Message/GetWriteMessageData", data).success(function (resultData) {
+        //        $scope.ReturnData = resultData;
+        //    }).error(function (ex) {
+        //        $log.console(ex);
+        //    });
+        //};
+        //GetWriteMessageData();
+
+        //Kayıt Sözleşmesi güncellemesi
         $scope.SingUpContractUpdate = function () {
 
             if ($("#btnSingUpContractUpdate").val() == "Onaylıyorum") {
@@ -59,31 +88,6 @@
                     console.log(ex);
                     $scope.singUpMessage = "Kayıt işlemi sırasında beklenmedik bir hata oluştu !";
                 });
-            }
-        };
-
-
-
-        $scope.GetWriteMessageData = function (data) {
-
-                $http.post("/Message/GetWriteMessageData", data).success(function (newdata) {
-                    $scope.newSenderName = newdata.SenderName;
-                    $scope.newReceiverName = newdata.ReceiverName;
-                }).error(function (ex) {
-                    console.log(ex);
-                });
-        };
-
-
-        $scope.WriteMessage = function (Id) {
-
-            if ($("#btnWriteMessage").val() == "Mesaj Yaz") {
-
-                var data = { Id: Id }
-
-                window.location = "/MesajYaz";
-                $scope.GetWriteMessageData(data);
-
             }
         };
 
@@ -109,8 +113,7 @@
                         $scope.confirmalert = "";
                     }
                 }
-                else
-                {
+                else {
                     $scope.singUpMessage = "Merak ettin ve okudun, kabul et !";
                 }
             }
@@ -185,7 +188,7 @@
         //Sözleşme Metni Düzenleme
         $scope.SettingUpdate = function () {
             if ($("#btnSettingUpdate").val() == "Güncelle") {
-               
+
                 var data = { SingUpContractText: $scope.SingUpContractText };
 
                 $http.post("/Setting/ContractTextUpdate", data).success(function (data) {

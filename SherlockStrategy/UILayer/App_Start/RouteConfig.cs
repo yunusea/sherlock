@@ -20,7 +20,7 @@ namespace UILayer
             routes.MapRoute(name : "SingupContract", url: "SingupContract", defaults: new { Controller  = "Account", action = "SingupContract" });
             routes.MapRoute(name : "SingupContractUpdate", url: "SingupContractUpdate", defaults: new { Controller  = "Account", action = "SingupContractUpdateControl" });
             routes.MapRoute(name: "Ayarlar", url: "Ayarlar", defaults: new { Controller = "Setting", action = "Index" });
-            routes.MapRoute(name: "MesajYaz", url: "MesajYaz", defaults: new { Controller = "Message", action = "WriteMessage" });
+            routes.MapRoute(name: "MesajYaz", url: "MesajYaz/{Id}", defaults: new { Controller = "Message", action = "WriteMessage", Id = "" });
 
             routes.MapRoute(name: "Default",url: "{controller}/{action}/{id}",defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional });
         }
