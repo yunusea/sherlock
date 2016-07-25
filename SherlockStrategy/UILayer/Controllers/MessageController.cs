@@ -11,23 +11,23 @@ namespace UILayer.Controllers
     public class MessageController : Controller
     {
         //TODO:
-        //public JsonResult GetWriteMessageData(int Id)
-        //{
-        //    var user = new UserBusiness();
-        //    var ReceiverUserInfo = user.GetUserInfo(Id);
-        //    var SenderUserInfo = user.GetUserInfo((int)Session["AccountId"]);
-        //    var WriteMessageWM = new WriteMessageViewModel()
-        //    {
-        //        SenderName = SenderUserInfo.UserName,
-        //        ReceiverName = ReceiverUserInfo.UserName
-        //    };
+        public ActionResult WriteMessage(int Id)
+        {
+            var user = new UserBusiness();
+            var ReceiverUserInfo = user.GetUserInfo(Id);
+            var SenderUserInfo = user.GetUserInfo((int)Session["AccountId"]);
+            var WriteMessageWM = new WriteMessageViewModel()
+            {
+                SenderName = SenderUserInfo.UserName,
+                ReceiverName = ReceiverUserInfo.UserName
+            };
 
-        //    return Json(WriteMessageWM, JsonRequestBehavior.AllowGet);
+            return View(WriteMessageWM);
 
-        //}
+        }
 
         //public ActionResult WriteMessage()
-        //{ 
+        //{
         //    try
         //    {
         //        if (Session["Account"] == null)
@@ -45,6 +45,9 @@ namespace UILayer.Controllers
         //        return RedirectToAction("SingupAndSignin", "Account");
         //    }
         //}
-
+        public ActionResult Test()
+        {
+            return View();
+        }
     }
 }

@@ -4,12 +4,21 @@
     app.controller("MainController", ["$scope", "$http", "$log", "$location", function UserController($scope, $http, $log, $location) {
         $scope.loading = true;
 
+        function GetAccount() {
+            $http.post("/Account/GetAccountInfo").success(function (data) {
+                $scope.AccountInfo = data;
+            }).error(function (ex) {
+                console.log(ex);
+            });
+        };
+        GetAccount();
+
         //Listeleme İşlemi
         function GetUsers() {
             $http.get("/User/GetUserList").success(function (data) {
                 $scope.users = data;
             }).error(function (ex) {
-                $log.info(ex);
+                console.log(ex);
             })
         };
         GetUsers();
@@ -44,37 +53,11 @@
         };
         GetSingupContractText();
 
-        //TODO:
-        //$scope.GetWriteMessage = function (Id) {
-        //    if ($("#btnWriteMessage").val() == "Mesaj Yaz") {
-        //        var data = { Id: Id }
-        //        $http.post("/Message/GetWriteMessageData", data).success(function (resultData) {
-        //                $location.path('/MesajYaz', resultData);
-        //        }).error(function (ex) {
-        //            console.log(ex);
-        //        });
-        //    }
-        //};
-        //$scope.GoWriteMessage = function (Id) {
-        //    if ($("#btnWriteMessage").val() == "Mesaj Yaz") {
-        //        //var data = { Id: Id };
-        //        //$scope.datascope = data;
-        //        Result:
-        //            {
-        //                Id: Id
-        //            };
-        //        window.location = "/MesajYaz";
-        //    }
-        //};
-        //function GetWriteMessageData() {
-        //    var data = $location.search().Id;
-        //    $http.post("/Message/GetWriteMessageData", data).success(function (resultData) {
-        //        $scope.ReturnData = resultData;
-        //    }).error(function (ex) {
-        //        $log.console(ex);
-        //    });
-        //};
-        //GetWriteMessageData();
+        $scope.WriteMessage = function (Id) {
+            if ($("#btnWriteMessage").val() == "Mesaj Yaz") {
+                window.location = "/MesajYaz/" + Id + "";
+            }
+        };
 
         //Kayıt Sözleşmesi güncellemesi
         $scope.SingUpContractUpdate = function () {

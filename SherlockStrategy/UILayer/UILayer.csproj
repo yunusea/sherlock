@@ -136,6 +136,7 @@
     <Content Include="scripts\jquery-1.10.2.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
     <Content Include="scripts\modernizr-2.6.2.js" />
+    <Content Include="scripts\script.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +172,7 @@
     <Content Include="Views\Setting\Index.cshtml" />
     <Content Include="Views\Account\SingupContractUpdateControl.cshtml" />
     <Content Include="Views\Message\WriteMessage.cshtml" />
+    <Content Include="Views\Message\Test.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

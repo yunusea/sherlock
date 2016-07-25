@@ -1,4 +1,4 @@
-﻿@model Models.Model.User
+﻿
 <!DOCTYPE html>
 
 <html ng-app="app">
@@ -8,12 +8,12 @@
     <title>Sherlock Strategy</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+    <link href="//code.ionicframework.com/nightly/css/ionic.css" rel="stylesheet">
+    <script src="//code.ionicframework.com/nightly/js/ionic.bundle.js"></script>
     <script src="~/Scripts/AngularJs_Site.js"></script>
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
-    <link href="//code.ionicframework.com/nightly/css/ionic.css" rel="stylesheet">
-    <script src="//code.ionicframework.com/nightly/js/ionic.bundle.js"></script>
 </head>
 <body ng-controller="MainController">
     <!-- Fixed navbar -->
@@ -33,15 +33,13 @@
                     <li><a href="/">Anasayfa</a></li>
                     <li><a href="#">Oyunlar</a></li>
 
-                    @if (Model.Rol == 1)
-                    {
-                        <li><a href="/Kullanicilar">Kullanıcılar</a></li>
-                        <li><a href="/Ayarlar">Ayarlar</a></li>
-                    }
+                        <li ng-if="AccountInfo.Rol == 1"><a href="/Kullanicilar">Kullanıcılar</a></li>
+                        <li ng-if="AccountInfo.Rol == 1"><a href="/Ayarlar">Ayarlar</a></li>
+
                     <li><a href="/Profil">Profil</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/profil"><span style="float:left; margin-right:10px;">@Model.UserName</span><img src="~/images/profile.png" class="img-responsive" width="20" /></a></li>
+                    <li><a href="/profil"><span style="float:left; margin-right:10px;">{{AccountInfo.UserName}}</span><img src="~/images/profile.png" class="img-responsive" width="20" /></a></li>
                     <li><a href="" ng-click="LogoutUser()">Çıkış</a></li>
                 </ul>
             </div><!--/.nav-collapse -->

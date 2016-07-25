@@ -151,5 +151,19 @@ namespace UILayer.Controllers
 
             return Json(resultUser, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult GetAccountInfo() {
+
+            if (Session["AccountId"] == null)
+            {
+                return RedirectToAction("SingupAndSignin", "Account");
+            }
+
+            var user = new UserBusiness();
+            var SenderUserInfo = user.GetUserInfo((int)Session["AccountId"]);
+
+            return Json(SenderUserInfo, JsonRequestBehavior.AllowGet);
+
+        }
     }
 }
