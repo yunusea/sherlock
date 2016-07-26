@@ -1,14 +1,10 @@
 ﻿using Contracts;
 using Models.Model;
-using OrmLayer;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Collections.Specialized.BitVector32;
 
 namespace BusinessLayer.Business
 {
@@ -27,7 +23,6 @@ namespace BusinessLayer.Business
 
         public void UpdateProfile(string UserName, string Password, string NewPassword)
         {
-
             var criterias = "UserName='" + UserName + "' and Password='" + Password + "'";
 
             var returnObjects = IoC.Castle.Resolve<IUserRepository>().GetByCriterias("User", criterias);
@@ -55,7 +50,6 @@ namespace BusinessLayer.Business
 
         public User GetLoginUser(string UserName, string Password)
         {
-
             var criterias = "UserName='" + UserName + "' and Password='" + Password + "'";
 
             var returnObjects = IoC.Castle.Resolve<IUserRepository>().GetByCriterias("User", criterias);
@@ -108,7 +102,6 @@ namespace BusinessLayer.Business
 
         public void DeleteUser(User Entity)
         {
-
             IoC.Castle.Resolve<IUserRepository>().Delete(Entity);
         }
 
@@ -131,7 +124,6 @@ namespace BusinessLayer.Business
             {
                 return null;
             }
-
         }
 
         public void ChangeStatu(User Entity)
@@ -164,7 +156,6 @@ namespace BusinessLayer.Business
             if (returnList.Count > 0)
             {
                 var resultUser = returnList.FirstOrDefault();
-
                 return resultUser;
             }
             else
@@ -175,7 +166,6 @@ namespace BusinessLayer.Business
 
         public User UpdateContractTextChecked(int Id)
         {
-
             var TableName = "User";
             var SetList = "SingUpContractStatus='True'";
             var CriterList = "Id='" + Id + "'";
@@ -192,7 +182,6 @@ namespace BusinessLayer.Business
                 if (returnList.Count > 0)
                 {
                     var resultUser = returnList.FirstOrDefault();
-
                     return resultUser;
                 }
                 else

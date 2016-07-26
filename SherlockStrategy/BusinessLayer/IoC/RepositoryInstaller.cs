@@ -1,10 +1,8 @@
-﻿using System;
-using Castle.MicroKernel.Registration;
+﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Repositorys.Repository;
 using Contracts;
-using Models.Model;
 
 namespace BusinessLayer.IoC
 {

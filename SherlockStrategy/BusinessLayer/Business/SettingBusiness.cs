@@ -1,9 +1,4 @@
 ﻿using Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BusinessLayer.Business
 {
@@ -20,7 +15,6 @@ namespace BusinessLayer.Business
                 var userSetList = "SingUpContractStatus='false'";
                 var userCriterList = "Rol!='1' and SingUpContractStatus='true'";
                 var userUpdateResult = IoC.Castle.Resolve<IUserRepository>().SpecialUpdate("User", userSetList, userCriterList);
-
             }
         }
     }

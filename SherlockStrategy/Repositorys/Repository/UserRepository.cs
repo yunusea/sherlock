@@ -1,11 +1,5 @@
 ﻿using Contracts;
-using Models.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OrmLayer;
 using System.Data;
 
 namespace Repositorys.Repository
@@ -13,6 +7,7 @@ namespace Repositorys.Repository
     public class UserRepository : IUserRepository
     {
         private readonly OrmMsSqlManager Db = new OrmMsSqlManager();
+
         public bool Insert(object Entity)
         {
             try

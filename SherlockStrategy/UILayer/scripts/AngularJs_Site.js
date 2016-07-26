@@ -53,10 +53,65 @@
         };
         GetSingupContractText();
 
+        function GetUserInBox() {
+            $http.get("/Message/GetUserInBox").success(function (data) {
+                $scope.InBoxMessages = data;
+            }).error(function (ex) {
+                console.log(ex);
+            });
+        };
+        GetUserInBox();
+
+        function GetUserSendBox() {
+            $http.get("/Message/GetUserSendBox").success(function (data) {
+                $scope.SendBoxMessages = data;
+            }).error(function (ex) {
+                console.log(ex);
+            });
+        };
+        GetUserSendBox();
+
+        $scope.ReadMessage = function (Id) {
+            if ($("#btnReadMessage").val() == "Oku") {
+                window.location = "/MesajOku/" + Id + "";
+            }
+        };
+
         $scope.WriteMessage = function (Id) {
             if ($("#btnWriteMessage").val() == "Mesaj Yaz") {
                 window.location = "/MesajYaz/" + Id + "";
             }
+        };
+
+        $scope.SendMessage = function (SenderId, ReceiverId) {
+            if ($("#btnSendMessage").val() == "Mesaj Gönder") {
+
+                var data = { SendUser: SenderId, ReceiverUser: ReceiverId, Subject: $scope.MessageSubject, MessageText: $scope.MessageContent };
+                $http.post("/Message/SendMessage",data).success(function () {
+                    console.log("Mesaj gönderimi başarılı.");
+                    window.location = "/GelenMesaj";
+                }).error(function (ex) {
+                    console.log(ex);
+                    $scope.singUpMessage = "Mesaj Gönderme İşlemi Sırasında Beklenmedik Bir Hata Oluştu !";
+                });
+            }
+        };
+
+        $scope.DeleteMessage = function (Id) {
+            var data = { Id: Id };
+            $http.post("/Message/DeleteMessage", data).success(function () {
+                window.location = "/GelenMesaj";
+            }).error(function (ex) {
+                console.log(ex);
+            })
+        };
+
+        $scope.BackToMessageList = function () {
+            window.location = "/GelenMesaj";
+        };
+
+        $scope.Reply = function (Id) {
+            window.location = "/MesajCevapla/" + Id + "";
         };
 
         //Kayıt Sözleşmesi güncellemesi

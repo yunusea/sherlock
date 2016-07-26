@@ -8,7 +8,7 @@ namespace UILayer.ViewModel
 {
     public class WriteMessageViewModel
     {
-        public string SenderName { get; set; }
-        public string ReceiverName { get; set; }
+        public User SenderName { get; set; }
+        public User ReceiverName { get; set; }
     }
 }

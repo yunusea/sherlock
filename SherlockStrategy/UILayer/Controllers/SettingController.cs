@@ -1,15 +1,11 @@
 ﻿using BusinessLayer.Business;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace UILayer.Controllers
 {
     public class SettingController : Controller
     {
-        // GET: Setting
         public ActionResult Index()
         {
             try
@@ -20,8 +16,7 @@ namespace UILayer.Controllers
                 }
                 else
                 {
-                    var _loginUserInfo = Session["Account"];
-                    return View(_loginUserInfo);
+                    return View();
                 }
             }
             catch
@@ -52,7 +47,6 @@ namespace UILayer.Controllers
                 var setting = new SettingBusiness();
                 setting.UpdateSetting(SingUpContractText);
 
-
                 return View();
             }
             catch (Exception ex)
@@ -60,6 +54,5 @@ namespace UILayer.Controllers
                 throw new NotSupportedException("Beklenmedik bir hata oluştu", ex);
             }
         }
-
     }
 }

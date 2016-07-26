@@ -1,31 +1,19 @@
 ﻿using BusinessLayer.Business;
 using Models.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Web;
 using System.Web.Mvc;
 
 namespace UILayer.Controllers
 {
     public class UserController : Controller
     {
-        // GET: User
         public ActionResult Index()
         {
             if (Session["Account"] == null)
             {
                 return RedirectToAction("SingupAndSignin", "Account");
             }
-
-            if (Session["AccountRol"].ToString() != "1")
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
-            var _loginUserInfo = Session["Account"];
-            return View(_loginUserInfo);
+            return View();
         }
 
         public ActionResult Profil()
@@ -38,8 +26,7 @@ namespace UILayer.Controllers
                 }
                 else
                 {
-                    var _loginUserInfo = Session["Account"];
-                    return View(_loginUserInfo);
+                    return View();
                 }
             }
             catch

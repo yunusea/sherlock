@@ -1,0 +1,20 @@
+﻿
+<br />
+<ul class="nav nav-tabs">
+    <li role="presentation" class="active"><a href="/GelenMesaj">Gelen Mesajlar</a></li>
+    <li role="presentation"><a href="/GidenMesaj">Gönderilmiş Mesajlar</a></li>
+</ul>
+<h1>Gelen Mesajlar</h1>
+<table class="table table-hover">
+    <tr>
+        <th>Konu</th>
+        <th>Durum</th>
+        <th>İşlem</th>
+    </tr>
+    <tr ng-repeat="message in InBoxMessages">
+        <td>{{message.Subject}}</td>
+        <td ng-if="message.Status == true">Okunmuş</td>
+        <td ng-if="message.Status == false">Okunmamış</td>
+        <td><input type="submit" class="btn btn-default" value="Oku" ng-click="ReadMessage(message.Id)" id="btnReadMessage" />  <input type="submit" class="btn btn-default" value="Sil" ng-click="DeleteMessage(message.Id)" /> </td>
+    </tr>
+</table>

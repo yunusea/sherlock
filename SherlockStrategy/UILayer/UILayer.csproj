@@ -150,6 +150,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\ReadMessageViewModel.cs" />
     <Compile Include="ViewModel\WriteMessageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -172,7 +173,10 @@
     <Content Include="Views\Setting\Index.cshtml" />
     <Content Include="Views\Account\SingupContractUpdateControl.cshtml" />
     <Content Include="Views\Message\WriteMessage.cshtml" />
-    <Content Include="Views\Message\Test.cshtml" />
+    <Content Include="Views\Message\InBox.cshtml" />
+    <Content Include="Views\Message\SendBox.cshtml" />
+    <Content Include="Views\Message\ReadMessage.cshtml" />
+    <Content Include="Views\Message\ReplyMessage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

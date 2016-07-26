@@ -1,0 +1,38 @@
+﻿@model UILayer.ViewModel.ReadMessageViewModel
+
+<div class="col-md-9">
+    <h2>Mesaj Cevaplama</h2>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="text-right col-md-6">Alıcı:</label>
+            <div class="col-md-6">
+                @Model.SenderName
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="text-right col-md-6">Konu:</label>
+            <div class="col-md-6">
+                @Model.Message.Subject
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="text-right col-md-6">Gelen Mesaj:</label>
+            <div class="col-md-6">
+                @Model.Message.MessageText
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="text-right col-md-6">Cevap:</label>
+            <div class="col-md-6">
+                <textarea name="Reply" ng-model="ReplyText" class="form-control"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-5"></label>
+            <div class="col-md-7">
+                <input type="submit" class="btn btn-block" name="Cevapla" value="Cevapla" ng-click="ReplySendMessage()" />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-3"></div>

@@ -1,0 +1,17 @@
+﻿
+<br />
+<ul class="nav nav-tabs">
+    <li role="presentation"><a href="/GelenMesaj">Gelen Mesajlar</a></li>
+    <li role="presentation" class="active"><a href="/GidenMesaj">Gönderilmiş Mesajlar</a></li>
+</ul>
+<h1>Gönderilmiş Mesajlar</h1>
+    <table class="table table-hover">
+    <tr>
+        <th>Konu</th>
+        <th>İşlem</th>
+    </tr>
+    <tr ng-repeat="message in SendBoxMessages">
+        <td>{{message.Subject}}</td>
+        <td><input type="submit" class="btn btn-default" value="Sil" ng-click="DeleteMessage(message.Id)" /> </td>
+    </tr>
+</table>

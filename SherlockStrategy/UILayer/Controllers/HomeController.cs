@@ -1,16 +1,9 @@
-﻿using Models.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Services.Description;
+﻿using System.Web.Mvc;
 
 namespace UILayer.Controllers
 {
     public class HomeController : Controller
     {
-        // GET: Home
         public ActionResult Index()
         {
             try
@@ -21,15 +14,13 @@ namespace UILayer.Controllers
                 }
                 else
                 {
-                    var _loginUserInfo = Session["Account"];
-                    return View(_loginUserInfo);
+                    return View();
                 }
             }
             catch
             {
                 return RedirectToAction("SingupAndSignin", "Account");
             }
-           
         }
     }
 }

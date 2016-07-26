@@ -1,6 +1,6 @@
 ﻿
 
-    <h1>Kullanıcı Listesi.</h1>
+    <h1>Kullanıcı Listesi</h1>
 
 <table class="table table-hover">
     <tr>
@@ -12,8 +12,9 @@
     <tr ng-repeat="user in users">
         <td>{{user.UserName}}</td>
         <td>{{user.Email}}</td>
-        <td>{{user.Status}}</td>
-        <td><input type="submit" class="btn btn-default" value="Durum Değiştir" ng-click="ChangeStatu(user.Id,user.Status)" /> <input type="submit" class="btn btn-default" value="Sil" ng-click="DeleteUser(user.Id)" /> <input type="submit" class="btn btn-default" value="Mesaj Yaz" ng-click="WriteMessage(user.Id)" id="btnWriteMessage" /> </td>
+        <td ng-if="user.Status == true">Aktif</td>
+        <td ng-if="user.Status == false">Aktif Değil</td>
+        <td><input type="submit" ng-if="AccountInfo.Rol == 1" class="btn btn-default" value="Durum Değiştir" ng-click="ChangeStatu(user.Id,user.Status)" /> <input type="submit" ng-if="AccountInfo.Rol == 1" class="btn btn-default" value="Sil" ng-click="DeleteUser(user.Id)" /> <input type="submit" class="btn btn-default" value="Mesaj Yaz" ng-click="WriteMessage(user.Id)" id="btnWriteMessage" /> </td>
     </tr>
 </table>
 

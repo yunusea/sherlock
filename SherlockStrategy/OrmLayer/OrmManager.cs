@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 
 namespace OrmLayer
@@ -47,6 +46,7 @@ namespace OrmLayer
         {
             _DataLayer.Update(Entity, Criterias);
         }
+
         public void SpecialUpdate(string TableName, string SetList, string CriterList)
         {
             _DataLayer.SpecialUpdate(TableName, SetList, CriterList);

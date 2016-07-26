@@ -1,10 +1,5 @@
-﻿using BusinessLayer;
-using BusinessLayer.Business;
-using Models.Model;
+﻿using BusinessLayer.Business;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace UILayer.Controllers
@@ -39,13 +34,13 @@ namespace UILayer.Controllers
 
         public ActionResult Login(string UserName, string Password)
         {
-            if (Session["Account"] != null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
             try
             {
+                if (Session["Account"] != null)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
                 var user = new UserBusiness();
 
                 //Kullanıcı giriş bilgilerini girdi ve giriş yap dedi.
@@ -75,10 +70,8 @@ namespace UILayer.Controllers
                 Session["AccountId"] = _loginUser.Id;
                 Session["AccountRol"] = _loginUser.Rol;
 
-
                 //Giriş başarılı olduğu için giriş yapan kullanıcının bilgileri Json il
                 return Json(_loginUser, JsonRequestBehavior.AllowGet);
-
             }
             catch (Exception ex)
             {
@@ -93,7 +86,6 @@ namespace UILayer.Controllers
                 Session.Abandon();
                 var message = "Çıkış Yapıldı";
                 return Json(message, JsonRequestBehavior.AllowGet);
-
             }
             catch (Exception ex)
             {
@@ -109,8 +101,7 @@ namespace UILayer.Controllers
                 {
                     if (Session["SleepAccount"] != null)
                     {
-                        var _loginUserInfo = Session["SleepAccount"];
-                        return View(_loginUserInfo);
+                        return View();
                     }
                     else
                     {
@@ -152,8 +143,8 @@ namespace UILayer.Controllers
             return Json(resultUser, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GetAccountInfo() {
-
+        public ActionResult GetAccountInfo()
+        {
             if (Session["AccountId"] == null)
             {
                 return RedirectToAction("SingupAndSignin", "Account");
@@ -163,7 +154,6 @@ namespace UILayer.Controllers
             var SenderUserInfo = user.GetUserInfo((int)Session["AccountId"]);
 
             return Json(SenderUserInfo, JsonRequestBehavior.AllowGet);
-
         }
     }
 }

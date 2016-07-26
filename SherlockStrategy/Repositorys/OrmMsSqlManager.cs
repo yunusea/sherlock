@@ -1,11 +1,7 @@
 ﻿using OrmLayer;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repositorys
 {
@@ -13,6 +9,7 @@ namespace Repositorys
     public class OrmMsSqlManager : IDisposable
     {
         public OrmManager _OrmManager = null;
+
         public OrmMsSqlManager()
         {
             _OrmManager = new OrmManager(
@@ -57,6 +54,7 @@ namespace Repositorys
         {
             _OrmManager.Update(Entity, criterias);
         }
+
         public void SpecialUpdate(string TableName, string SetList, string CriterList)
         {
             _OrmManager.SpecialUpdate(TableName, SetList, CriterList);

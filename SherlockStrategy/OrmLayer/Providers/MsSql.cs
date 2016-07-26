@@ -1,4 +1,3 @@
-using Models.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,8 +5,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OrmLayer.Providers
 {
@@ -100,7 +97,6 @@ namespace OrmLayer.Providers
             }
 
             return dt;
-
         }
 
         public void Delete(object entity)
@@ -122,7 +118,6 @@ namespace OrmLayer.Providers
                     columnList.Add(property.Name);
                     ValuesList.Add(property.GetValue(entity));
                 }
-
             }
 
             string columnsPart = string.Join(",", columnList);
@@ -159,7 +154,6 @@ namespace OrmLayer.Providers
                 cmd.Parameters.AddWithValue(parameterName, property.GetValue(entity));
             }
 
-
             cmd.CommandText = string.Format("UPDATE {0} SET {1} WHERE {2}", typeof(object).Name, setList, Criterias);
 
             if (conn.State != ConnectionState.Open)
@@ -172,7 +166,6 @@ namespace OrmLayer.Providers
             {
                 conn.Close();
             }
-
         }
 
         public void SpecialUpdate(string TableName, string SetList, string CriterList)
@@ -208,8 +201,7 @@ namespace OrmLayer.Providers
                 var cmd = conn.CreateCommand();
 
                 cmd.CommandText = string.Format("SELECT * FROM [{0}] WHERE {1}", TableName, CriteriasText);
-
-
+                
                 if (conn.State != ConnectionState.Open)
                 {
                     conn.Open();
@@ -222,14 +214,12 @@ namespace OrmLayer.Providers
                 {
                     conn.Close();
                 }
-
             }
             catch (Exception ex)
             {
                 conn.Close();
                 throw;
             }
-
             return dt;
         }
     }
