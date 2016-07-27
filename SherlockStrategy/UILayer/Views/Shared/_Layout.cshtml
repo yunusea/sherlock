@@ -24,26 +24,26 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Sherlock</a>
+                <a class="navbar-brand" href="/">Sherlock</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="/">Anasayfa</a></li>
-                    <li><a href="#">Oyunlar</a></li>
-                        <li><a href="/Kullanicilar">Kullanıcılar</a></li>
-                        <li ng-if="AccountInfo.Rol == 1"><a href="/Ayarlar">Ayarlar</a></li>
+                    <li><a href="/Oyunlar">Oyunlar</a></li>
+                    <li><a href="/Kullanicilar">Kullanıcılar</a></li>
+                    <li ng-if="AccountInfo.Rol == 1"><a href="/Ayarlar">Ayarlar</a></li>
+                    <li ng-if="AccountInfo.Rol == 1"><a href="/IletisimMesajlari">İletişim Form Mesajları</a></li>
                     <li><a href="/Profil">Profil</a></li>
                     <li><a href="/GelenMesaj">Mesajlar</a></li>
+                    <li><a href="/Iletisim">İletişim</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/profil"><span style="float:left; margin-right:10px;">{{AccountInfo.UserName}}</span><img src="~/images/profile.png" class="img-responsive" width="20" /></a></li>
+                    <li><a href="/profil"><span style="float:left; margin-right:10px;">{{AccountInfo.UserName}}</span><img src="~/images/profile.png" class="img-circle profileImage" width="25" /></a></li>
                     <li><a href="" ng-click="LogoutUser()">Çıkış</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
     </nav>
-
-    
 
     <div class="container">
         @RenderBody()

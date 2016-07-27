@@ -1,0 +1,62 @@
+﻿@{ 
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html ng-app="app">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sherlock Strategy</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+    <script src="~/Scripts/AngularJs_Site.js"></script>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+</head>
+<body ng-controller="MainController">
+
+    <div class="container">
+        <h2>İletişim Formu</h2>
+        <div class="col-md-12">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-md-6">Konu</label>
+                    <div class="col-md-6">
+                        <select name="subject" class="form-control" ng-model="subject">
+                            <option ng-selected="true" value="">Konu Başlığı Seçimi Yapınız !</option>
+                            <option value="Hata Bildirimi">Hata Bildirimi</option>
+                            <option value="Talep Bildirimi">Talep Bildirimi</option>
+                            <option value="Uyarı Bildirimi">Uyarı Bildirimi</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-6">Mesaj</label>
+                    <div class="col-md-6">
+                        <textarea name="ContactMessage" class="form-control" ng-model="contactMessage"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-9">
+                        <input type="submit" class="btn btn-block" value="Gönder" ng-click="SendContactMessage()" id="btnSendContactMessage" /> <input type="submit" class="btn btn-block" value="Anasayfaya Dön" ng-click="BackToHome()" id="btnBackToHome" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-9">
+                        {{ResultMessage}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</body>
+</html>

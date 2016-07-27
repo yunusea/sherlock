@@ -4,6 +4,12 @@
     app.controller("MainController", ["$scope", "$http", "$log", "$location", function UserController($scope, $http, $log, $location) {
         $scope.loading = true;
 
+        function CurrentPageUrl() {
+            var currentUrl = window.location.pathname;
+            $scope.Url = currentUrl;
+        };
+        CurrentPageUrl();
+
         function GetAccount() {
             $http.post("/Account/GetAccountInfo").success(function (data) {
                 $scope.AccountInfo = data;
@@ -15,37 +21,43 @@
 
         //Listeleme İşlemi
         function GetUsers() {
-            $http.get("/User/GetUserList").success(function (data) {
+            $http.post("/User/GetUserList").success(function (data) {
                 $scope.users = data;
             }).error(function (ex) {
                 console.log(ex);
             })
         };
-        GetUsers();
+        if ($scope.Url == "/Kullanicilar") {
+            GetUsers();
+        }
 
         //Kayıt Sözleşmesini Getir
         function SingupContract() {
-            $http.get("/Account/GetSingupContract").success(function (data) {
+            $http.post("/Account/GetSingupContract").success(function (data) {
                 $scope.SingupContractMessage = data;
             }).error(function (ex) {
                 $log.info(ex);
             })
         };
-        SingupContract();
+        if ($scope.Url == "/SingupContract") {
+            SingupContract();
+        }
 
         //Profil Bilgilerini Getir
         function GetProfilInfo() {
-            $http.get("/User/GetProfilInfo").success(function (data) {
+            $http.post("/User/GetProfilInfo").success(function (data) {
                 $scope.UserName = data.UserName;
             }).error(function (ex) {
                 $log.console(ex);
             });
         }
-        GetProfilInfo();
+        if ($scope.Url == "/Profil") {
+            GetProfilInfo();
+        }
 
         //Kayıt sözleşme metni getir
         function GetSingupContractText() {
-            $http.get("/Setting/GetContractText").success(function (data) {
+            $http.post("/Setting/GetContractText").success(function (data) {
                 $scope.SingUpContractText = data;
             }).error(function (ex) {
                 console.log(ex);
@@ -53,36 +65,84 @@
         };
         GetSingupContractText();
 
+        //Gelen Mesaj Listesini Getir
         function GetUserInBox() {
-            $http.get("/Message/GetUserInBox").success(function (data) {
+            $http.post("/Message/GetUserInBox").success(function (data) {
                 $scope.InBoxMessages = data;
             }).error(function (ex) {
                 console.log(ex);
             });
         };
-        GetUserInBox();
+        if ($scope.Url == "/GelenMesaj") {
+            GetUserInBox();
+        }
 
+        //Gönderilen Mesaj Listesini Getir
         function GetUserSendBox() {
-            $http.get("/Message/GetUserSendBox").success(function (data) {
+            $http.post("/Message/GetUserSendBox").success(function (data) {
                 $scope.SendBoxMessages = data;
             }).error(function (ex) {
                 console.log(ex);
             });
         };
-        GetUserSendBox();
+        if ($scope.Url == "/GidenMesaj") {
+            GetUserSendBox();
+        }
 
+        //İletişim Formundan Gelen Mesajları Listele
+        function GetContactFormMessage() {
+            $http.post("/Contact/GetContactFormMessage").success(function (returnData) {
+                $scope.ContactFormMessages = returnData;
+            }).error(function (ex) {
+                console.log(ex);
+            });
+        };
+        if ($scope.Url == "/IletisimMesajlari") {
+            GetContactFormMessage();
+        }
+
+
+        //Oyun Listesi
+        function GetAllGameList() {
+            $http.post("/Game/GetGameList").success(function (returnData) {
+                $scope.GetGameList = returnData;
+            }).error(function (ex) {
+                console.log(ex);
+            });
+        };
+        if ($scope.Url == "/Oyunlar") {
+            GetAllGameList();
+        }
+
+        //Cevap mesajı gönderme
+        $scope.ReplySendMessage = function (Id) {
+            if ($("#btnReplyMessage").val() == "Cevapla") {
+
+                var data = { messageId: Id, ReplyContent: $scope.ReplyText };
+
+                $http.post("/Message/ReplyMessageSave", data).success(function (returnData) {
+                    $scope.Return = returnData;
+                }).error(function (ex) {
+                    console.log(ex);
+                });
+            }
+        };
+
+        //Mesaj Okuma sayfasına yönlendirme
         $scope.ReadMessage = function (Id) {
             if ($("#btnReadMessage").val() == "Oku") {
                 window.location = "/MesajOku/" + Id + "";
             }
         };
 
+        //Mesaj Yazma sayfasına yönlendirme
         $scope.WriteMessage = function (Id) {
             if ($("#btnWriteMessage").val() == "Mesaj Yaz") {
                 window.location = "/MesajYaz/" + Id + "";
             }
         };
 
+        //Mesaj Gönderme
         $scope.SendMessage = function (SenderId, ReceiverId) {
             if ($("#btnSendMessage").val() == "Mesaj Gönder") {
 
@@ -97,6 +157,7 @@
             }
         };
 
+        //Mesaj Silme
         $scope.DeleteMessage = function (Id) {
             var data = { Id: Id };
             $http.post("/Message/DeleteMessage", data).success(function () {
@@ -106,10 +167,12 @@
             })
         };
 
+        //Gelen Kutusuna Geri Dönme Butonuna Tıklandığında Çalışacak Yönlendirme
         $scope.BackToMessageList = function () {
             window.location = "/GelenMesaj";
         };
 
+        //Mesaj Cevaplama sayfasına yönlendirme
         $scope.Reply = function (Id) {
             window.location = "/MesajCevapla/" + Id + "";
         };
@@ -245,6 +308,25 @@
             }).error(function (ex) {
                 console.log(ex);
             });
+        };
+
+        //İletişim Formu Gönder
+        $scope.SendContactMessage = function () {
+            if ($("#btnSendContactMessage").val() == "Gönder") {
+            
+                var data = { Subject: $scope.subject, Message: $scope.contactMessage };
+
+                $http.post("/Contact/SendContactMessage", data).success(function (resultData) {
+                    $scope.ResultMessage = resultData;
+                }).error(function (ex) {
+                    console.log(ex)
+                });
+            }
+        };
+
+        //İletişim Formundan Geri Dön
+        $scope.BackToHome = function () {
+                window.location = "/Anasayfa";
         };
     }]);
 

@@ -12,6 +12,6 @@
     </tr>
     <tr ng-repeat="message in SendBoxMessages">
         <td>{{message.Subject}}</td>
-        <td><input type="submit" class="btn btn-default" value="Sil" ng-click="DeleteMessage(message.Id)" /> </td>
+        <td><input type="submit" class="btn btn-default" value="Oku" ng-click="ReadMessage(message.Id)" id="btnReadMessage" />  <input type="submit" class="btn btn-default" value="Sil" ng-click="DeleteMessage(message.Id)" /> </td>
     </tr>
 </table>

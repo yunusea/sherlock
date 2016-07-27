@@ -41,6 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IBaseRepository.cs" />
+    <Compile Include="IContactRepository.cs" />
+    <Compile Include="IGameRepository.cs" />
+    <Compile Include="IGeneralSettingRepository.cs" />
+    <Compile Include="IMessageRepository.cs" />
     <Compile Include="IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -29,8 +29,8 @@ namespace UILayer.Controllers
         {
             try
             {
-                var contract = new UserBusiness();
-                var returnData = contract.GetContractText();
+                var generalSettingBusiness = new GeneralSettingBusiness();
+                var returnData = generalSettingBusiness.GetContractText();
                 var ContractMessage = returnData.ContractText;
                 return Json(ContractMessage, JsonRequestBehavior.AllowGet);
             }
@@ -44,8 +44,8 @@ namespace UILayer.Controllers
         {
             try
             {
-                var setting = new SettingBusiness();
-                setting.UpdateSetting(SingUpContractText);
+                var generalSettingBusiness = new GeneralSettingBusiness();
+                generalSettingBusiness.UpdateSetting(SingUpContractText);
 
                 return View();
             }

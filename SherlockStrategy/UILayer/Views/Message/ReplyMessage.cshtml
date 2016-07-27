@@ -28,11 +28,18 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-md-5"></label>
-            <div class="col-md-7">
-                <input type="submit" class="btn btn-block" name="Cevapla" value="Cevapla" ng-click="ReplySendMessage()" />
+            <label class="col-md-3"></label>
+            <div class="col-md-9">
+               {{Return}}
             </div>
         </div>
+        <div class="form-group">
+            <label class="col-md-3"></label>
+            <div class="col-md-9">
+                <input type="submit" class="btn btn-block" name="Cevapla" value="Cevapla" ng-click="ReplySendMessage(@Model.Message.Id)" id="btnReplyMessage" /> <input type="submit" value="Geri Dön" class="btn btn-block" ng-click="BackToMessageList()" />
+            </div>
+        </div>
+        
     </div>
 </div>
 <div class="col-md-3"></div>

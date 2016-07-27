@@ -1,0 +1,7 @@
+Oyun listesinden SOS oyununun satýrýnda ki bilgisayara karþý oyna butonuna týklandý.
+SOS oyununa ait sayfaya yönlendirildi.
+Sayfanýn ortasýnda silik bir þekilde oyuna baþla butonun altýnda kalacak þekilde 3x3 9 kutucuk olan bir tablo çýktý.
+Oyuna baþla butonana týklayýnca oyun alaný belirginleþti ve buton kayboldu.
+Ýlk hamle kullanýcýya aittir 
+kullanýcý her zaman S dir.
+bilgisayar her zaman O dur.

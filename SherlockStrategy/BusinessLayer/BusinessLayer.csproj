@@ -49,8 +49,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\ContactBusiness.cs" />
+    <Compile Include="Business\GameBusiness.cs" />
     <Compile Include="Business\MessageBusiness.cs" />
-    <Compile Include="Business\SettingBusiness.cs" />
+    <Compile Include="Business\GeneralSettingBusiness.cs" />
     <Compile Include="Business\UserBusiness.cs" />
     <Compile Include="IoC\Castle.cs" />
     <Compile Include="IoC\RepositoryInstaller.cs" />

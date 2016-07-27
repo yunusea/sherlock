@@ -69,26 +69,6 @@ namespace BusinessLayer.Business
             }
         }
 
-        public List<T> ConvertToList<T>(DataTable dt)
-        {
-            var columnNames = dt.Columns.Cast<DataColumn>()
-                .Select(c => c.ColumnName)
-                .ToList();
-            var properties = typeof(T).GetProperties();
-            return dt.AsEnumerable().Select(row =>
-            {
-                var objT = Activator.CreateInstance<T>();
-                foreach (var pro in properties)
-                {
-                    if (columnNames.Contains(pro.Name))
-                    {
-                        pro.SetValue(objT, row[pro.Name]);
-                    }
-                }
-                return objT;
-            }).ToList();
-        }
-
         public List<User> GetAllUserList()
         {
             var entity = new User();
@@ -103,27 +83,6 @@ namespace BusinessLayer.Business
         public void DeleteUser(User Entity)
         {
             IoC.Castle.Resolve<IUserRepository>().Delete(Entity);
-        }
-
-        public GeneralSetting GetContractText()
-        {
-            var criterias = "Id='1'";
-
-            var returnObjects = IoC.Castle.Resolve<IUserRepository>().GetByCriterias("GeneralSetting", criterias);
-
-            List<GeneralSetting> returnList = new List<GeneralSetting>();
-            returnList = ConvertToList<GeneralSetting>(returnObjects);
-
-            if (returnList.Count > 0)
-            {
-                var resultUsert = returnList.FirstOrDefault();
-
-                return resultUsert;
-            }
-            else
-            {
-                return null;
-            }
         }
 
         public void ChangeStatu(User Entity)
@@ -164,35 +123,24 @@ namespace BusinessLayer.Business
             }
         }
 
-        public User UpdateContractTextChecked(int Id)
+        public List<T> ConvertToList<T>(DataTable dt)
         {
-            var TableName = "User";
-            var SetList = "SingUpContractStatus='True'";
-            var CriterList = "Id='" + Id + "'";
-            var resultUserUpdate = IoC.Castle.Resolve<IUserRepository>().SpecialUpdate(TableName, SetList, CriterList);
-
-            if (resultUserUpdate)
+            var columnNames = dt.Columns.Cast<DataColumn>()
+                .Select(c => c.ColumnName)
+                .ToList();
+            var properties = typeof(T).GetProperties();
+            return dt.AsEnumerable().Select(row =>
             {
-                var UserTableName = "User";
-                var UserCriterList = "Id='" + Id + "'";
-                var resultUserObject = IoC.Castle.Resolve<IUserRepository>().GetByCriterias(UserTableName, UserCriterList);
-                List<User> returnList = new List<User>();
-                returnList = ConvertToList<User>(resultUserObject);
-
-                if (returnList.Count > 0)
+                var objT = Activator.CreateInstance<T>();
+                foreach (var pro in properties)
                 {
-                    var resultUser = returnList.FirstOrDefault();
-                    return resultUser;
+                    if (columnNames.Contains(pro.Name))
+                    {
+                        pro.SetValue(objT, row[pro.Name]);
+                    }
                 }
-                else
-                {
-                    throw new NotSupportedException("Beklenmedik Bir Problem İle Karşılaşıldı");
-                }
-            }
-            else
-            {
-                throw new NotSupportedException("Sözleşme Durum Güncellemesi Başarılı Bir Şekilde Gerçekleştirilemedi !");
-            }
+                return objT;
+            }).ToList();
         }
     }
 }

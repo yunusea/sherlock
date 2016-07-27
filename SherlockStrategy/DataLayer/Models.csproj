@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Contact.cs" />
+    <Compile Include="Model\Game.cs" />
     <Compile Include="Model\GeneralSetting.cs" />
     <Compile Include="Model\Message.cs" />
     <Compile Include="Model\User.cs" />

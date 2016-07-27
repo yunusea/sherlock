@@ -50,10 +50,10 @@ namespace UILayer.Controllers
         {
             try
             {
-                var messagebusiness = new MessageBusiness();
+                var messageBusiness = new MessageBusiness();
 
-                var Id  = Convert.ToInt32(Session["AccountId"]);
-                var messageList = messagebusiness.GetUserInBoxMessages(Id);
+                var Id = Convert.ToInt32(Session["AccountId"]);
+                var messageList = messageBusiness.GetUserInBoxMessages(Id);
 
                 return Json(messageList, JsonRequestBehavior.AllowGet);
             }
@@ -67,10 +67,10 @@ namespace UILayer.Controllers
         {
             try
             {
-                var messagebusiness = new MessageBusiness();
+                var messageBusiness = new MessageBusiness();
 
 
-                messagebusiness.DeleteMessage(Entity);
+                messageBusiness.DeleteMessage(Entity);
 
                 return RedirectToAction("GetUserInBox", "Message");
             }
@@ -84,10 +84,10 @@ namespace UILayer.Controllers
         {
             try
             {
-                var messagebusiness = new MessageBusiness();
+                var messageBusiness = new MessageBusiness();
 
                 var Id = Convert.ToInt32(Session["AccountId"]);
-                var messageList = messagebusiness.GetUserSendBoxMessages(Id);
+                var messageList = messageBusiness.GetUserSendBoxMessages(Id);
 
                 return Json(messageList, JsonRequestBehavior.AllowGet);
             }
@@ -96,7 +96,7 @@ namespace UILayer.Controllers
                 throw new NotSupportedException("Beklenmedik bir hata oluştu !", ex);
             }
         }
-        
+
         public ActionResult ReadMessage(int Id)
         {
             try
@@ -107,12 +107,12 @@ namespace UILayer.Controllers
                 }
                 else
                 {
-                    var messagebusiness = new MessageBusiness();
-                    var message = messagebusiness.GetByMessage(Id);
-                    var userbusiness = new UserBusiness();
-                    var senderUser = userbusiness.GetUserInfo(message.SendUser);
-                    var ReceiverUser = userbusiness.GetUserInfo(message.ReceiverUser);
-                    messagebusiness.ChangeStatus(Id);
+                    var messageBusiness = new MessageBusiness();
+                    var message = messageBusiness.GetByMessage(Id);
+                    var userBusiness = new UserBusiness();
+                    var senderUser = userBusiness.GetUserInfo(message.SendUser);
+                    var ReceiverUser = userBusiness.GetUserInfo(message.ReceiverUser);
+                    messageBusiness.ChangeStatus(Id);
                     var ReadMessageVM = new ReadMessageViewModel()
                     {
                         Message = message,
@@ -138,9 +138,9 @@ namespace UILayer.Controllers
                 }
                 else
                 {
-                    var user = new UserBusiness();
-                    var ReceiverUserInfo = user.GetUserInfo(Id);
-                    var SenderUserInfo = user.GetUserInfo((int)Session["AccountId"]);
+                    var userBusiness = new UserBusiness();
+                    var ReceiverUserInfo = userBusiness.GetUserInfo(Id);
+                    var SenderUserInfo = userBusiness.GetUserInfo((int)Session["AccountId"]);
                     var WriteMessageWM = new WriteMessageViewModel()
                     {
                         SenderName = SenderUserInfo,
@@ -154,17 +154,15 @@ namespace UILayer.Controllers
             {
                 return RedirectToAction("SingupAndSignin", "Account");
             }
-
-
         }
 
         public JsonResult SendMessage(Message message)
         {
             try
             {
-                var messagebusiness = new MessageBusiness();
+                var messageBusiness = new MessageBusiness();
 
-                messagebusiness.SendMessage(message);
+                messageBusiness.SendMessage(message);
                 return Json(message, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -175,16 +173,45 @@ namespace UILayer.Controllers
 
         public ActionResult ReplyMessage(int Id)
         {
-            var messagebusiness = new MessageBusiness();
-            var message = messagebusiness.GetByMessage(Id);
-            var userbusiness = new UserBusiness();
-            var sendUser = userbusiness.GetUserInfo(message.SendUser);
+            var messageBusiness = new MessageBusiness();
+            var message = messageBusiness.GetByMessage(Id);
+            var userBusiness = new UserBusiness();
+            var sendUser = userBusiness.GetUserInfo(message.SendUser);
             var ReadMessageVM = new ReadMessageViewModel()
             {
                 SenderName = sendUser.UserName,
                 Message = message
             };
             return View(ReadMessageVM);
+        }
+
+        public JsonResult ReplyMessageSave(ReplySendViewMode ReplySendVM)
+        {
+            try
+            {
+                var replyObject = ReplySendVM;
+                var messageBusiness = new MessageBusiness();
+                var message = messageBusiness.GetByMessage(replyObject.messageId);
+                var AccountId = Convert.ToInt32(Session["AccountId"]);
+                var replyMessageObject = new Message()
+                {
+                    Date = DateTime.Now,
+                    MessageText = replyObject.ReplyContent,
+                    ReceiverUser = message.SendUser,
+                    Status = false,
+                    SendUser = AccountId,
+                    Subject = message.Subject
+                };
+
+                messageBusiness.SendMessage(replyMessageObject);
+
+                var viewMessage = "Mesajınız Başarılı Bir Şekilde Gönderilmiştir !";
+                return Json(viewMessage, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                throw new NotSupportedException("Beklenmedik bir hata oluştu !", ex);
+            }
         }
     }
 }

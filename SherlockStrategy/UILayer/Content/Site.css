@@ -15,3 +15,18 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.btn-block+.btn-block{
+    margin:0px !important;
+}
+
+.profileImage{
+    border:1px solid #aaa;
+}
+
+.cell input{
+    border:1px solid #ddd;
+    display:block;
+    padding:20px;
+    text-transform:uppercase;
+}

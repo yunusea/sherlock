@@ -14,14 +14,14 @@ namespace BusinessLayer.Business
             Entity.Status = false;
             Entity.Date = DateTime.Now;
 
-            IoC.Castle.Resolve<IUserRepository>().Insert(Entity);
+            IoC.Castle.Resolve<IMessageRepository>().Insert(Entity);
         }
 
         public List<Message> GetUserInBoxMessages(int Id)
         {
             var criterias = "ReceiverUser='" + Id + "'";
 
-            var returnObjects = IoC.Castle.Resolve<IUserRepository>().GetByCriterias("Message", criterias);
+            var returnObjects = IoC.Castle.Resolve<IMessageRepository>().GetByCriterias("Message", criterias);
 
             List<Message> returnList = new List<Message>();
             returnList = ConvertToList<Message>(returnObjects);
@@ -40,7 +40,7 @@ namespace BusinessLayer.Business
         {
             var criterias = "SendUser='" + Id + "'";
 
-            var returnObjects = IoC.Castle.Resolve<IUserRepository>().GetByCriterias("Message", criterias);
+            var returnObjects = IoC.Castle.Resolve<IMessageRepository>().GetByCriterias("Message", criterias);
 
             List<Message> returnList = new List<Message>();
             returnList = ConvertToList<Message>(returnObjects);
@@ -59,7 +59,7 @@ namespace BusinessLayer.Business
         {
             var criterias = "Id='" + Id + "'";
 
-            var returnObjects = IoC.Castle.Resolve<IUserRepository>().GetByCriterias("Message", criterias);
+            var returnObjects = IoC.Castle.Resolve<IMessageRepository>().GetByCriterias("Message", criterias);
 
             List<Message> returnList = new List<Message>();
             returnList = ConvertToList<Message>(returnObjects);
@@ -73,6 +73,20 @@ namespace BusinessLayer.Business
             {
                 throw new NotSupportedException("Mesaj Bulunamadı");
             }
+        }
+
+        public void DeleteMessage(Message Entity)
+        {
+            IoC.Castle.Resolve<IMessageRepository>().Delete(Entity);
+        }
+
+        public void ChangeStatus(int Id)
+        {
+            var updateCriterias = "Id='" + Id + "'";
+            var setList = "Status='true'";
+            var TableName = "Message";
+
+            IoC.Castle.Resolve<IMessageRepository>().SpecialUpdate(TableName, setList, updateCriterias);
         }
 
         public List<T> ConvertToList<T>(DataTable dt)
@@ -93,20 +107,6 @@ namespace BusinessLayer.Business
                 }
                 return objT;
             }).ToList();
-        }
-
-        public void DeleteMessage(Message Entity)
-        {
-            IoC.Castle.Resolve<IUserRepository>().Delete(Entity);
-        }
-
-        public void ChangeStatus(int Id)
-        {
-            var updateCriterias = "Id='" + Id + "'";
-            var setList = "Status='true'";
-            var TableName = "Message";
-
-            IoC.Castle.Resolve<IUserRepository>().SpecialUpdate(TableName, setList, updateCriterias);
         }
     }
 }

@@ -58,9 +58,9 @@ namespace UILayer.Controllers
         {
             try
             {
-                var user = new UserBusiness();
+                var userBusiness = new UserBusiness();
 
-                var _listUsers = user.GetAllUserList();
+                var _listUsers = userBusiness.GetAllUserList();
 
                 var result = Json(_listUsers, JsonRequestBehavior.AllowGet);
 
@@ -76,9 +76,9 @@ namespace UILayer.Controllers
         {
             try
             {
-                var user = new UserBusiness();
+                var userBusiness = new UserBusiness();
 
-                user.UpdateProfile(UserName, Password, NewPassword);
+                userBusiness.UpdateProfile(UserName, Password, NewPassword);
 
                 return RedirectToAction("GetUserList", "Account");
             }
@@ -92,10 +92,9 @@ namespace UILayer.Controllers
         {
             try
             {
-                var user = new UserBusiness();
+                var userBusiness = new UserBusiness();
 
-
-                user.DeleteUser(Entity);
+                userBusiness.DeleteUser(Entity);
 
                 return RedirectToAction("GetUserList", "Account");
             }
@@ -109,12 +108,12 @@ namespace UILayer.Controllers
         {
             try
             {
-                var user = new UserBusiness();
+                var userBusiness = new UserBusiness();
 
                 Entity.Rol = 2;
                 Entity.Status = false;
                 Entity.SingUpContractStatus = true;
-                user.AddUser(Entity);
+                userBusiness.AddUser(Entity);
 
                 return RedirectToAction("SingupAndSignin", "Account");
             }
@@ -128,9 +127,9 @@ namespace UILayer.Controllers
         {
             try
             {
-                var user = new UserBusiness();
+                var userBusiness = new UserBusiness();
 
-                user.ChangeStatu(Entity);
+                userBusiness.ChangeStatu(Entity);
 
                 return RedirectToAction("Index", "User");
             }

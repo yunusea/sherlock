@@ -26,8 +26,8 @@ namespace UILayer.Controllers
 
         public JsonResult GetSingupContract()
         {
-            var contract = new UserBusiness();
-            var returnData = contract.GetContractText();
+            var generalSettingBusiness = new GeneralSettingBusiness();
+            var returnData = generalSettingBusiness.GetContractText();
             var ContractMessage = returnData.ContractText;
             return Json(ContractMessage, JsonRequestBehavior.AllowGet);
         }
@@ -41,10 +41,10 @@ namespace UILayer.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
-                var user = new UserBusiness();
+                var userBusiness = new UserBusiness();
 
                 //Kullanıcı giriş bilgilerini girdi ve giriş yap dedi.
-                var _loginUser = user.GetLoginUser(UserName, Password);
+                var _loginUser = userBusiness.GetLoginUser(UserName, Password);
 
                 //giriş yap butonuna bastıktan sonra kullanıcının bilgisi döndü
                 if (_loginUser == null)
@@ -137,8 +137,8 @@ namespace UILayer.Controllers
 
             var propInfo = _loginUserInfo.GetType().GetProperty("Id");
             int Id = (int)propInfo.GetValue(_loginUserInfo);
-            var user = new UserBusiness();
-            var resultUser = user.UpdateContractTextChecked(Id);
+            var generalSettingBusiness = new GeneralSettingBusiness();
+            var resultUser = generalSettingBusiness.UpdateContractTextChecked(Id);
 
             return Json(resultUser, JsonRequestBehavior.AllowGet);
         }
@@ -150,8 +150,8 @@ namespace UILayer.Controllers
                 return RedirectToAction("SingupAndSignin", "Account");
             }
 
-            var user = new UserBusiness();
-            var SenderUserInfo = user.GetUserInfo((int)Session["AccountId"]);
+            var userBusiness = new UserBusiness();
+            var SenderUserInfo = userBusiness.GetUserInfo((int)Session["AccountId"]);
 
             return Json(SenderUserInfo, JsonRequestBehavior.AllowGet);
         }
