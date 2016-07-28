@@ -24,9 +24,19 @@ textarea {
     border:1px solid #aaa;
 }
 
-.cell input{
-    border:1px solid #ddd;
+.xoxGameContent{
+    width: 300px; 
+    height: 300px;
+}
+.xoxGameRow{
+    width: 300px; 
+    height: 100px;
+}
+.xoxCell{
+    width:100px; 
+    height:100px; 
+    border:1px solid #ddd; 
     display:block;
-    padding:20px;
-    text-transform:uppercase;
+    float:left;
+    background:none;
 }

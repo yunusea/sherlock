@@ -152,6 +152,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\GamePlayViewModel.cs" />
     <Compile Include="ViewModel\ReadMessageViewModel.cs" />
     <Compile Include="ViewModel\ReplySendViewMode.cs" />
     <Compile Include="ViewModel\WriteMessageViewModel.cs" />

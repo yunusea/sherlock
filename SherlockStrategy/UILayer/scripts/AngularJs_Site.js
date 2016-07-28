@@ -1,7 +1,7 @@
 ﻿(function (angular) {
-    var app = angular.module("app", []);
+    var app = angular.module("app", ['ngSanitize']);
 
-    app.controller("MainController", ["$scope", "$http", "$log", "$location", function UserController($scope, $http, $log, $location) {
+    app.controller("MainController", ["$scope", "$http", "$log", "$location", "$sce", function MainController($scope, $http, $log, $location, $sce) {
         $scope.loading = true;
 
         function CurrentPageUrl() {
@@ -101,7 +101,6 @@
             GetContactFormMessage();
         }
 
-
         //Oyun Listesi
         function GetAllGameList() {
             $http.post("/Game/GetGameList").success(function (returnData) {
@@ -113,6 +112,25 @@
         if ($scope.Url == "/Oyunlar") {
             GetAllGameList();
         }
+
+        function GetPlayGamePage () {
+            $http.post("/Game/GetPlayGamePage").success(function (returnData) {
+                $scope.Board = $sce.trustAsHtml(returnData);
+            }).error(function () {
+                console.log(ex);
+            });
+        };
+        GetPlayGamePage();
+
+        $scope.fillCell = function (x1, x2) {
+            var data = { x1: x1, x2: x2 };
+        
+            $http.post("/Game/ControlEndSet", data).success(function () {
+                GetPlayGamePage();
+            }).error(function (ex) {
+                console.log(ex);
+            });
+        };
 
         //Cevap mesajı gönderme
         $scope.ReplySendMessage = function (Id) {
@@ -330,4 +348,15 @@
         };
     }]);
 
+    app.directive('dir', function ($compile, $parse) {
+        return {
+            restrict: 'E',
+            link: function (scope, element, attr) {
+                scope.$watch(attr.content, function () {
+                    element.html($parse(attr.content)(scope));
+                    $compile(element.contents())(scope);
+                }, true);
+            };
+        }
+    });
 })(angular);
