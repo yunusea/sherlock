@@ -1,5 +1,5 @@
 ﻿(function (angular) {
-    var app = angular.module("app", ['ngSanitize']);
+    var app = angular.module("app", ['ngSanitize', 'ngAnimate']);
 
     app.controller("MainController", ["$scope", "$http", "$log", "$location", "$sce", function MainController($scope, $http, $log, $location, $sce) {
         $scope.loading = true;
@@ -18,6 +18,47 @@
             });
         };
         GetAccount();
+
+
+        //Game Start
+
+
+        //Oyun Listesinden Oyuna Tıklandığında Oyun Sayfasına Yönlendirme
+        $scope.GotoGame = function (Id) {
+            window.location = "/OyunOyna/" + Id;
+        };
+
+        $scope.GetTemp = function (Id) {
+            var data = { Id: Id };
+            $http.post("/Game/GetGameInfo",data).success(function (returnData) {
+                $scope.templates = [{ name: '/GameTemplates/' + returnData.TempPath, url: '/GameTemplates/' + returnData.TempPath }];
+                $scope.template = $scope.templates[0];
+                var range = [];
+                for (var i = 0; i < 3; i++) {
+                    range.push(i);
+                }
+                $scope.range = range;
+                $scope.GameName = returnData.GameName;
+            }).error(function (ex) {
+                console.log(ex);
+            });
+        };
+
+        $scope.fillCell = function (p,x1, x2) {
+
+            var value = $("#cell" + x1 + x2 + "").val();
+            if (value == "")
+            {
+                if (p == 1) {
+                    $("#cell" + x1 + x2 + "").val("X");
+                }
+                else if (p == 2) {
+                    $("#cell" + x1 + x2 + "").val("0");
+                }
+            }
+        };
+
+        //Game End
 
         //Listeleme İşlemi
         function GetUsers() {
@@ -112,25 +153,6 @@
         if ($scope.Url == "/Oyunlar") {
             GetAllGameList();
         }
-
-        function GetPlayGamePage () {
-            $http.post("/Game/GetPlayGamePage").success(function (returnData) {
-                $scope.Board = $sce.trustAsHtml(returnData);
-            }).error(function () {
-                console.log(ex);
-            });
-        };
-        GetPlayGamePage();
-
-        $scope.fillCell = function (x1, x2) {
-            var data = { x1: x1, x2: x2 };
-        
-            $http.post("/Game/ControlEndSet", data).success(function () {
-                GetPlayGamePage();
-            }).error(function (ex) {
-                console.log(ex);
-            });
-        };
 
         //Cevap mesajı gönderme
         $scope.ReplySendMessage = function (Id) {
@@ -356,7 +378,7 @@
                     element.html($parse(attr.content)(scope));
                     $compile(element.contents())(scope);
                 }, true);
-            };
+            }
         }
     });
 })(angular);

@@ -1,8 +1,12 @@
-﻿
-<h1>Oyun</h1>
+﻿@model Models.Model.Game
 
 <div class="col-md-12">
     <div class="col-md-2">
-        <dir id="dir" content="Board"></dir>
+        <h1>@Model.GameName</h1>
+        <input type="submit" class="btn btn-default" ng-click="GetTemp(@Model.Id)" value="Oyuna Başla" />
+        <input type="submit" class="btn btn-default" ng-click="RestartGame(@Model.Id)" value="Yeniden Oyna" />
+        <br />
+        <br />
+        <div ng-include="template.url"></div>
     </div>
 </div>

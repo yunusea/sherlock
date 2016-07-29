@@ -8,7 +8,7 @@
         </tr>
         <tr ng-repeat="game in GetGameList">
             <td>{{game.GameName}}</td>
-            <td><input type="submit" class="btn btn-default" value="Bilgisayara Karşı" /> <input type="submit" class="btn btn-default" value="Oyuncu Davet Et" /></td>
+            <td><input type="submit" class="btn btn-default" ng-click="GotoGame(game.Id)" value="Bilgisayara Karşı" /> <input type="submit" class="btn btn-default" value="Oyuncu Davet Et" /></td>
         </tr>
     </table>
 

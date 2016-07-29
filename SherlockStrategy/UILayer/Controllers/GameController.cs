@@ -1,7 +1,9 @@
 ﻿using BusinessLayer.Business;
+using Models.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using UILayer.ViewModel;
@@ -30,18 +32,20 @@ namespace UILayer.Controllers
             }
         }
 
-        public ActionResult PlayGamePage()
+        public ActionResult PlayGamePage(int Id)
         {
-            return View();
+            var gameBusiness = new GameBusiness();
+            var game = gameBusiness.GetGameInfo(Id);
+            return View(game);
         }
 
-        public JsonResult GetPlayGamePage()
+        public JsonResult GetGameInfo(int Id)
         {
             try
             {
-                var gameBusiness = new GameBusiness();
-                var gameBoard = gameBusiness.GetBoard();
-                return Json(gameBoard, JsonRequestBehavior.AllowGet);
+                var gameBuseiness = new GameBusiness();
+                var gameInfo = gameBuseiness.GetGameInfo(Id);
+                return Json(gameInfo, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -51,15 +55,13 @@ namespace UILayer.Controllers
 
         public JsonResult ControlEndSet(int x1, int x2)
         {
-            var d1 = x1;
-            var d2 = x2;
             string er = "";
             var gameBusiness = new GameBusiness();
-            var returnData = gameBusiness.CellControl(d1, d2);
+            var returnData = gameBusiness.CellControl(x1, x2);
 
             if (returnData)
             {
-                gameBusiness.CellSet(1, d1, d2);
+                gameBusiness.SaveHandle(1, x1, x2);
             }
             else
             {

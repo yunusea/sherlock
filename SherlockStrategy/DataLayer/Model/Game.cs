@@ -7,5 +7,6 @@ namespace Models.Model
         [Key]
         public int Id { get; set; }
         public string GameName { get; set; }
+        public string TempPath { get; set; }
     }
 }

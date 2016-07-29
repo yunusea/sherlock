@@ -23,10 +23,31 @@ namespace BusinessLayer.Business
             return userList;
         }
 
+        public Game GetGameInfo(int Id)
+        {
+
+            var criterias = "Id='" + Id + "'";
+
+            var returnObjects = IoC.Castle.Resolve<IGameRepository>().GetByCriterias("Game", criterias);
+
+            List<Game> returnList = new List<Game>();
+            returnList = ConvertToList<Game>(returnObjects);
+
+            if (returnList.Count > 0)
+            {
+                var resultGame = returnList.FirstOrDefault();
+
+                return resultGame;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public string GetBoard()
         {
             StringBuilder builder = new StringBuilder();
-            builder.Append("<div class=\"xoxGameContent\">");
             for (int i = 0; i < 3; i++)
             {
                 builder.Append("<div class=\"xoxGameRow\">");
@@ -36,7 +57,6 @@ namespace BusinessLayer.Business
                 }
                 builder.Append("</div>");
             }
-            builder.Append("</div>");
 
             string innerString = builder.ToString();
 
@@ -56,7 +76,7 @@ namespace BusinessLayer.Business
             }
         }
 
-        public void CellSet(int playerType, int x1, int x2)
+        public void SaveHandle(int playerType, int x1, int x2)
         {
             if (playerType == 1)
             {
@@ -66,6 +86,7 @@ namespace BusinessLayer.Business
             {
                 board[x1, x2] = "O";
             }
+
         }
 
         public List<T> ConvertToList<T>(DataTable dt)
