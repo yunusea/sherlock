@@ -28,36 +28,121 @@
             window.location = "/OyunOyna/" + Id;
         };
 
-        $scope.GetTemp = function (Id) {
-            var data = { Id: Id };
-            $http.post("/Game/GetGameInfo",data).success(function (returnData) {
-                $scope.templates = [{ name: '/GameTemplates/' + returnData.TempPath, url: '/GameTemplates/' + returnData.TempPath }];
-                $scope.template = $scope.templates[0];
-                var range = [];
-                for (var i = 0; i < 3; i++) {
-                    range.push(i);
-                }
-                $scope.range = range;
-                $scope.GameName = returnData.GameName;
+        $scope.GetTemp = function (Et, Id) {
+            var data = { Et: Et, Id: Id };
+            $http.post("/Game/EncounterSave", data).success(function (returnData) {
+                $scope.EncounterId = returnData.Id;
+                var gameData = { Id: Id };
+                $http.post("/Game/GetGameInfo", gameData).success(function (returnData) {
+                    $scope.templates = [{ name: '/GameTemplates/' + returnData.TempPath, url: '/GameTemplates/' + returnData.TempPath }];
+                    $scope.template = $scope.templates[0];
+                    var range = [];
+                    for (var i = 0; i < 3; i++) {
+                        range.push(i);
+                    }
+                    $scope.range = range;
+                    $scope.GameName = returnData.GameName;
+                }).error(function (ex) {
+                    console.log(ex);
+                });
             }).error(function (ex) {
                 console.log(ex);
             });
         };
 
-        $scope.fillCell = function (p,x1, x2) {
 
+
+        $scope.GotoOngoingGameList = function () {
+            window.location = "/DevamEdenOyunlar";
+        };
+
+        $scope.fillCell = function (x1, x2) {
             var value = $("#cell" + x1 + x2 + "").val();
-            if (value == "")
-            {
-                if (p == 1) {
+            if (value == "") {
+                var cellNameId = "cell" + x1 + x2;
+                var data = { eId: $scope.EncounterId, cellNameId: cellNameId };
+                $http.post("/Game/SaveMove", data).success(function (returnData) {
                     $("#cell" + x1 + x2 + "").val("X");
+                    $scope.GameFinishControl("Oyuncu");
+                    $scope.OpponentMove();
+                }).error(function (ex) {
+                    console.log(ex);
+                    $("#cell" + x1 + x2 + "").val("");
+                });
+            }
+        };
+
+        $scope.OpponentMove = function () {
+
+            var status;
+            for (var i = 0; i < 3; i++) {
+
+                if (status == true) {
+                    $scope.GameFinishControl("Bilgisayar");
+                    break;
                 }
-                else if (p == 2) {
-                    $("#cell" + x1 + x2 + "").val("0");
+                if ($("#cell" + i + "0").val() == $("#cell" + i + "1").val() && $("#cell" + i + "2").val() == "") {
+                    $("#cell" + i + "2").val("O")
+                    status = true;
+                }
+                else if ($("#cell0" + i + "").val() == $("#cell1" + i + "").val() && $("#cell2" + i + "").val() == "") {
+                    $("#cell2" + i + "").val("O")
+                    status = true;
+                }
+                else if ($("#cell" + i + "0").val() == $("#cell" + i + "2").val() && $("#cell" + i + "1").val() == "") {
+                    $("#cell" + i + "1").val("O")
+                    status = true;
+                }
+                else if ($("#cell0" + i + "").val() == $("#cell2" + i + "").val() && $("#cell1" + i + "").val() == "") {
+                    $("#cell1" + i + "").val("O")
+                    status = true;
+                }
+                else if ($("#cell" + i + "2").val() == $("#cell" + i + "1").val() && $("#cell" + i + "0").val() == "") {
+                    $("#cell" + i + "0").val("O")
+                    status = true;
+                }
+                else if ($("#cell2" + i + "").val() == $("#cell1" + i + "").val() && $("#cell0" + i + "").val() == "") {
+                    $("#cell0" + i + "").val("O")
+                    status = true;
+                }
+                else {
+                    x = Math.floor((Math.random() * 2));
+                    y = Math.floor((Math.random() * 2));
+                    if ($("#cell" + x + y + "").val() == "") {
+                        $("#cell" + x + y + "").val("O");
+                        status = true;
+                    }
                 }
             }
         };
 
+
+        $scope.GameFinishControl = function (player) {
+
+            for(var a = 0; a < 3; a++)
+            {
+                if ($("#cell" + a + "0").val() == $("#cell" + a + "1").val() && $("#cell" + a + "1").val() == $("#cell" + a + "2").val() == "") {
+                    $scope.WinMessage = player + " kazandı !";
+                    break;
+                }
+                else if($("#cell0" + a + "").val() == $("#cell1" + a + "").val() && $("#cell1" + a + "").val() == $("#cell2" + a + "").val() == "")
+                {
+                    $scope.WinMessage = player + " kazandı !";
+                    break;
+                }
+            }
+        };
+
+        function GetOngoingGameList() {
+            $http.post("/Game/GetOngoingGameList").success(function (returnData) {
+                $scope.GetOngoingGameList = returnData;
+            }).error(function (ex) {
+                console.log(ex);
+            });
+        };
+        if ($scope.Url == "/DevamEdenOyunlar") {
+            GetOngoingGameList();
+        }
         //Game End
 
         //Listeleme İşlemi
@@ -187,7 +272,7 @@
             if ($("#btnSendMessage").val() == "Mesaj Gönder") {
 
                 var data = { SendUser: SenderId, ReceiverUser: ReceiverId, Subject: $scope.MessageSubject, MessageText: $scope.MessageContent };
-                $http.post("/Message/SendMessage",data).success(function () {
+                $http.post("/Message/SendMessage", data).success(function () {
                     console.log("Mesaj gönderimi başarılı.");
                     window.location = "/GelenMesaj";
                 }).error(function (ex) {
@@ -353,7 +438,7 @@
         //İletişim Formu Gönder
         $scope.SendContactMessage = function () {
             if ($("#btnSendContactMessage").val() == "Gönder") {
-            
+
                 var data = { Subject: $scope.subject, Message: $scope.contactMessage };
 
                 $http.post("/Contact/SendContactMessage", data).success(function (resultData) {
@@ -366,7 +451,7 @@
 
         //İletişim Formundan Geri Dön
         $scope.BackToHome = function () {
-                window.location = "/Anasayfa";
+            window.location = "/Anasayfa";
         };
     }]);
 

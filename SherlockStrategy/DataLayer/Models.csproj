@@ -42,9 +42,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Contact.cs" />
+    <Compile Include="Model\EncounterArchive.cs" />
     <Compile Include="Model\Game.cs" />
     <Compile Include="Model\GeneralSetting.cs" />
     <Compile Include="Model\Message.cs" />
+    <Compile Include="Model\MoveArchive.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

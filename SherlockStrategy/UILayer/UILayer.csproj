@@ -187,6 +187,7 @@
     <Content Include="Views\Contact\ContactFormMessage.cshtml" />
     <Content Include="Views\Game\Index.cshtml" />
     <Content Include="Views\Game\PlayGamePage.cshtml" />
+    <Content Include="Views\Game\OngoingGameList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

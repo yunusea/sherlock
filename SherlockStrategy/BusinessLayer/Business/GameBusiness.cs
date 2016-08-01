@@ -45,22 +45,26 @@ namespace BusinessLayer.Business
             }
         }
 
-        public string GetBoard()
+        public EncounterArchive GetEncounter(int playerId, int GameId)
         {
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < 3; i++)
+            var criterias = "PlayerId='" + playerId + "' and GameId='" + GameId + "'";
+
+
+            var returnObjects = IoC.Castle.Resolve<IGameRepository>().GetByCriterias("EncounterArchive", criterias);
+
+            List<EncounterArchive> returnList = new List<EncounterArchive>();
+            returnList = ConvertToList<EncounterArchive>(returnObjects);
+
+            if (returnList.Count > 0)
             {
-                builder.Append("<div class=\"xoxGameRow\">");
-                for (int j = 0; j < 3; j++)
-                {
-                    builder.Append("<input type=\"submit\" class=\"xoxCell\" ng-click=\"fillCell(" + i + "," + j + ")\" name=\"cell" + i + "," + j + "\" value=\"" + board[i,j] + "\"  />");
-                }
-                builder.Append("</div>");
+                var resultGame = returnList.FirstOrDefault();
+
+                return resultGame;
             }
-
-            string innerString = builder.ToString();
-
-            return innerString;
+            else
+            {
+                return null;
+            }
         }
 
         public bool CellControl(int x1, int x2)
@@ -76,19 +80,60 @@ namespace BusinessLayer.Business
             }
         }
 
-        public void SaveHandle(int playerType, int x1, int x2)
+        public List<EncounterArchive> OngoingGameList(int pId)
         {
-            if (playerType == 1)
+            var criterias = "PlayerId='" + pId + "'";
+
+            var returnObjects = IoC.Castle.Resolve<IGameRepository>().GetByCriterias("EncounterArchive", criterias);
+
+            List<EncounterArchive> returnList = new List<EncounterArchive>();
+            returnList = ConvertToList<EncounterArchive>(returnObjects);
+
+            if (returnList.Count > 0)
             {
-                board[x1, x2] = "X";
+                return returnList.ToList();
             }
             else
             {
-                board[x1, x2] = "O";
+                return null;
             }
+        }
+
+        public void SaveEncounter(int PlayerId, int EncounterType, int Id)
+        {
+
+            var EncounterArchive = new EncounterArchive()
+            {
+                GameId = Id,
+                EncounterType = EncounterType,
+                MoveCount = 0,
+                StartDate = DateTime.Now,
+                PlayerId = PlayerId
+            };
+
+            IoC.Castle.Resolve<IGameRepository>().Insert(EncounterArchive);
 
         }
 
+        public bool SaveMove(int eId, string cellNameId)
+        {
+            try
+            {
+                var MoveArchive = new MoveArchive()
+                {
+                    EncounterId = eId,
+                    MoveCellId = cellNameId
+                };
+
+                var returnInsert = IoC.Castle.Resolve<IGameRepository>().Insert(MoveArchive);
+                return returnInsert;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
         public List<T> ConvertToList<T>(DataTable dt)
         {
             var columnNames = dt.Columns.Cast<DataColumn>()

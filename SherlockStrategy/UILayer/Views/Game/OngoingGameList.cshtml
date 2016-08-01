@@ -1,0 +1,15 @@
+﻿
+<div class="col-md-12">
+    <h1>Devam Eden Oyunlar</h1>
+    <table class="table table-hover">
+        <tr>
+            <td>Oyun Tpi</td>
+            <td>İşlem</td>
+        </tr>
+        <tr ng-repeat="game in GetOngoingGameList">
+            <td ng-if="game.EncounterType==1">Bilgisayara Karşı</td>
+            <td ng-if="game.EncounterType==2">Oyuncuya Karşı</td>
+            <td><input type="submit" class="btn btn-default" ng-click="GotoGame(game.Id)" value="Devam Et" /></td>
+        </tr>
+    </table>
+</div>

@@ -14,7 +14,21 @@ namespace UILayer.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            try
+            {
+                if (Session["Account"] == null)
+                {
+                    return RedirectToAction("SingupAndSignin", "Account");
+                }
+                else
+                {
+                    return View();
+                }
+            }
+            catch
+            {
+                return RedirectToAction("SingupAndSignin", "Account");
+            }
         }
 
         public JsonResult GetGameList()
@@ -34,9 +48,41 @@ namespace UILayer.Controllers
 
         public ActionResult PlayGamePage(int Id)
         {
-            var gameBusiness = new GameBusiness();
-            var game = gameBusiness.GetGameInfo(Id);
-            return View(game);
+
+            try
+            {
+                if (Session["Account"] == null)
+                {
+                    return RedirectToAction("SingupAndSignin", "Account");
+                }
+                else
+                {
+                    var gameBusiness = new GameBusiness();
+                    var game = gameBusiness.GetGameInfo(Id);
+                    return View(game);
+                }
+            }
+            catch
+            {
+                return RedirectToAction("SingupAndSignin", "Account");
+            }
+        }
+
+        public JsonResult EncounterSave(int Et, int Id)
+        {
+            try
+            {
+                var gameBusiness = new GameBusiness();
+                var playerId = Convert.ToInt32(Session["AccountId"]);
+                gameBusiness.SaveEncounter(playerId, Et, Id);
+                var Encounter = gameBusiness.GetEncounter(playerId, Id);
+
+                return Json(Encounter,JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex, "Beklenmedik Bir Hata Oluştur");
+            }
         }
 
         public JsonResult GetGameInfo(int Id)
@@ -53,22 +99,55 @@ namespace UILayer.Controllers
             }
         }
 
-        public JsonResult ControlEndSet(int x1, int x2)
+        public ActionResult OngoingGameList()
         {
-            string er = "";
-            var gameBusiness = new GameBusiness();
-            var returnData = gameBusiness.CellControl(x1, x2);
-
-            if (returnData)
+            try
             {
-                gameBusiness.SaveHandle(1, x1, x2);
+                if (Session["Account"] == null)
+                {
+                    return RedirectToAction("SingupAndSignin", "Account");
+                }
+                else
+                {
+                    return View();
+                }
             }
-            else
+            catch
             {
-                er = "Bu hücreyi seçemezsin !";
+                return RedirectToAction("SingupAndSignin", "Account");
             }
+        }
 
-            return Json(er, JsonRequestBehavior.AllowGet);
+        public JsonResult GetOngoingGameList()
+        {
+            try
+            {
+                var gameBusiness = new GameBusiness();
+                var playerId = Convert.ToInt32(Session["AccountId"]);
+                var ongoingGameList = gameBusiness.OngoingGameList(playerId);
+                return Json(ongoingGameList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex, "Devam Eden Oyun Listesi Getirilemedi !");
+            }
+        }
+
+        public JsonResult SaveMove(int eId, string cellNameId)
+        {
+            try
+            {
+                var gameBusiness = new GameBusiness();
+                var playerId = Convert.ToInt32(Session["AccountId"]);
+                var returnMove = gameBusiness.SaveMove(eId, cellNameId);
+               
+                return Json(returnMove, JsonRequestBehavior.AllowGet);
+             
+            }
+            catch (Exception ex)
+            {
+                return Json(ex, "Beklenmedik Bir Hata Oluştur");
+            }
         }
     }
 }

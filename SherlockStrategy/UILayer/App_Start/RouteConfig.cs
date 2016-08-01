@@ -25,7 +25,8 @@ namespace UILayer
             routes.MapRoute(name: "IletisimMesajlari", url: "IletisimMesajlari", defaults: new { Controller = "Contact", action = "ContactFormMessage" });
             routes.MapRoute(name: "Oyunlar", url: "Oyunlar", defaults: new { Controller = "Game", action = "Index" });
             routes.MapRoute(name: "OyunOyna", url: "OyunOyna/{Id}", defaults: new { Controller = "Game", action = "PlayGamePage", Id="" });
-
+            routes.MapRoute(name: "DevamEdenOyunlar", url: "DevamEdenOyunlar", defaults: new { Controller = "Game", action = "OngoingGameList" });
+            
             routes.MapRoute(name: "Default", url: "{controller}/{action}/{id}", defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional });
         }
     }
