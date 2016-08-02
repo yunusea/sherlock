@@ -7,6 +7,8 @@ namespace Models.Model
         [Key]
         public int Id { get; set; }
         public int EncounterId { get; set; }
-        public string MoveCellId { get; set; }
+        public int MoveCellx { get; set; }
+        public int MoveCelly { get; set; }
+        public string CellValue { get; set; }
     }
 }

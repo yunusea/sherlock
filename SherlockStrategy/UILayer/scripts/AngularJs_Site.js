@@ -19,13 +19,14 @@
         };
         GetAccount();
 
-
-        //Game Start
-
-
+        //XOX Game Start
         //Oyun Listesinden Oyuna Tıklandığında Oyun Sayfasına Yönlendirme
         $scope.GotoGame = function (Id) {
             window.location = "/OyunOyna/" + Id;
+        };
+
+        $scope.GotoContinueGame = function (Id) {
+            window.location = "/OyunaDevamEt/" + Id;
         };
 
         $scope.GetTemp = function (Et, Id) {
@@ -50,86 +51,175 @@
             });
         };
 
+        $scope.GetTempContinue = function (Id) {
+            $scope.EncounterId = Id;
+            var data = { Id: Id };
+            $http.post("/Game/GetCotinueGame", data).success(function (returnData) {
+                $scope.templates = [{ name: '/GameTemplates/' + returnData.TempPath, url: '/GameTemplates/' + returnData.TempPath }];
+                $scope.template = $scope.templates[0];
+                var range = [];
+                for (var i = 0; i < 3; i++) {
+                    range.push(i);
+                }
+                $scope.range = range;
+                $scope.GameName = returnData.GameName;
 
+                $http.post("/Game/GetLabeledCell", data).success(function (returnData) {
+                    $scope.Moves = returnData;
+                    for (var j = 0; j < returnData.length + 1; j++) {
+                        for (var i = 0; i < 3; i++) {
+                            for (var a = 0; a < 3; a++) {
+                                if (returnData[j].MoveCellx == i && returnData[j].MoveCelly == a) {
+                                    $("#cell" + i + a + "").val("" + returnData[j].CellValue + "");
+                                }
+                            }
+                        }
+                    }
+                }).error(function (ex) {
+                    console.log(ex);
+                });
+            }).error(function (ex) {
+                console.log(ex);
+            })
+        };
 
         $scope.GotoOngoingGameList = function () {
             window.location = "/DevamEdenOyunlar";
         };
 
         $scope.fillCell = function (x1, x2) {
-            var value = $("#cell" + x1 + x2 + "").val();
-            if (value == "") {
-                var cellNameId = "cell" + x1 + x2;
-                var data = { eId: $scope.EncounterId, cellNameId: cellNameId };
-                $http.post("/Game/SaveMove", data).success(function (returnData) {
-                    $("#cell" + x1 + x2 + "").val("X");
-                    $scope.GameFinishControl("Oyuncu");
-                    $scope.OpponentMove();
-                }).error(function (ex) {
-                    console.log(ex);
-                    $("#cell" + x1 + x2 + "").val("");
-                });
+            if ($scope.WinMessage == null) {
+                var value = $("#cell" + x1 + x2 + "").val();
+                if (value == "") {
+                    var data = { eId: $scope.EncounterId, MoveCellx: x1, MoveCelly: x2, Value: "X" };
+                    $http.post("/Game/SaveMove", data).success(function (returnData) {
+                        $("#cell" + x1 + x2 + "").val("X");
+                        $scope.GameFinishControl("Oyuncu");
+                        if ($scope.WinMessage == null) {
+                            $scope.OpponentMove();
+                        }
+                    }).error(function (ex) {
+                        console.log(ex);
+                        $("#cell" + x1 + x2 + "").val("");
+                    });
+                }
             }
         };
 
         $scope.OpponentMove = function () {
 
             var status;
+            var x1, x2;
             for (var i = 0; i < 3; i++) {
 
                 if (status == true) {
                     $scope.GameFinishControl("Bilgisayar");
                     break;
                 }
-                if ($("#cell" + i + "0").val() == $("#cell" + i + "1").val() && $("#cell" + i + "2").val() == "") {
-                    $("#cell" + i + "2").val("O")
+
+                if (($("#cell" + i + "0").val() != "" && $("#cell" + i + "1").val() != "") && ($("#cell" + i + "0").val() == $("#cell" + i + "1").val()) && $("#cell" + i + "2").val() == "") {
+                    $("#cell" + i + "2").val("O");
+                    x1 = i; x2 = 2;
                     status = true;
                 }
-                else if ($("#cell0" + i + "").val() == $("#cell1" + i + "").val() && $("#cell2" + i + "").val() == "") {
-                    $("#cell2" + i + "").val("O")
+                else if (($("#cell0" + i + "").val() != "" && $("#cell1" + i + "").val() != "") && ($("#cell0" + i + "").val() == $("#cell1" + i + "").val()) && $("#cell2" + i + "").val() == "") {
+                    $("#cell2" + i + "").val("O");
+                    x1 = 2; x2 = i;
                     status = true;
                 }
-                else if ($("#cell" + i + "0").val() == $("#cell" + i + "2").val() && $("#cell" + i + "1").val() == "") {
-                    $("#cell" + i + "1").val("O")
+                else if (($("#cell" + i + "0").val() != "" && $("#cell" + i + "2").val() != "") && ($("#cell" + i + "0").val() == $("#cell" + i + "2").val()) && $("#cell" + i + "1").val() == "") {
+                    $("#cell" + i + "1").val("O");
+                    x1 = i; x2 = 1;
                     status = true;
                 }
-                else if ($("#cell0" + i + "").val() == $("#cell2" + i + "").val() && $("#cell1" + i + "").val() == "") {
-                    $("#cell1" + i + "").val("O")
+                else if (($("#cell0" + i + "").val() != "" && $("#cell2" + i + "").val() != "") && ($("#cell0" + i + "").val() == $("#cell2" + i + "").val()) && $("#cell1" + i + "").val() == "") {
+                    $("#cell1" + i + "").val("O");
+                    x1 = 1; x2 = i;
                     status = true;
                 }
-                else if ($("#cell" + i + "2").val() == $("#cell" + i + "1").val() && $("#cell" + i + "0").val() == "") {
-                    $("#cell" + i + "0").val("O")
+                else if (($("#cell" + i + "2").val() != "" && $("#cell" + i + "1").val() != "") && ($("#cell" + i + "2").val() == $("#cell" + i + "1").val()) && $("#cell" + i + "0").val() == "") {
+                    $("#cell" + i + "0").val("O");
+                    x1 = i; x2 = 0;
                     status = true;
                 }
-                else if ($("#cell2" + i + "").val() == $("#cell1" + i + "").val() && $("#cell0" + i + "").val() == "") {
-                    $("#cell0" + i + "").val("O")
+                else if (($("#cell2" + i + "").val() != "" && $("#cell1" + i + "").val() != "") && ($("#cell2" + i + "").val() == $("#cell1" + i + "").val()) && $("#cell0" + i + "").val() == "") {
+                    $("#cell0" + i + "").val("O");
+                    x1 = 0; x2 = i;
                     status = true;
                 }
-                else {
-                    x = Math.floor((Math.random() * 2));
-                    y = Math.floor((Math.random() * 2));
-                    if ($("#cell" + x + y + "").val() == "") {
-                        $("#cell" + x + y + "").val("O");
-                        status = true;
+                else if (($("#cell00").val() != "" && $("#cell11").val() != "") && ($("#cell00").val() == $("#cell11").val()) && $("#cell22").val() == "") {
+                    $("#cell22").val("O");
+                    x1 = 2; x2 = 2;
+                    status = true;
+                }
+                else if (($("#cell00").val() != "" && $("#cell22").val() != "") && ($("#cell00").val() == $("#cell22").val()) && $("#cell11").val() == "") {
+                    $("#cell11").val("O");
+                    x1 = 1; x2 = 1;
+                    status = true;
+                }
+                else if (($("#cell22").val() != "" && $("#cell11").val() != "") && ($("#cell22").val() == $("#cell11").val()) && $("#cell00").val() == "") {
+                    $("#cell00").val("O");
+                    x1 = 0; x2 = 0;
+                    status = true;
+                }
+                else if (($("#cell02").val() != "" && $("#cell11").val() != "") && ($("#cell02").val() == $("#cell11").val()) && $("#cell20").val() == "") {
+                    $("#cell20").val("O");
+                    x1 = 2; x2 = 0;
+                    status = true;
+                }
+                else if (($("#cell02").val() != "" && $("#cell20").val() != "") && ($("#cell02").val() == $("#cell20").val()) && $("#cell11").val() == "") {
+                    $("#cell11").val("O");
+                    x1 = 1; x2 = 1;
+                    status = true;
+                }
+                else if (($("#cell20").val() != "" && $("#cell11").val() != "") && ($("#cell20").val() == $("#cell11").val()) && $("#cell02").val() == "") {
+                    $("#cell02").val("O");
+                    x1 = 0; x2 = 2;
+                    status = true;
+                }
+                if (i == 2) {
+                    if (status != true) {
+                        x = Math.floor((Math.random() * 2));
+                        y = Math.floor((Math.random() * 2));
+                        if ($("#cell" + x + y + "").val() == "") {
+                            $("#cell" + x + y + "").val("O");
+                            x1 = x; x2 = y;
+                            status = true;
+                        } else {
+                            i = 0;
+                        }
                     }
                 }
             }
-        };
 
+            var data = { eId: $scope.EncounterId, MoveCellx: x1, MoveCelly: x2, Value: "O" };
+            $http.post("/Game/SaveMove", data).success(function (returnData) {
+                console.log("Save Move Success !");
+            }).error(function (ex) {
+                console.log(ex);
+                $("#cell" + x1 + x2 + "").val("");
+            });
+        };
 
         $scope.GameFinishControl = function (player) {
 
-            for(var a = 0; a < 3; a++)
-            {
-                if ($("#cell" + a + "0").val() == $("#cell" + a + "1").val() && $("#cell" + a + "1").val() == $("#cell" + a + "2").val() == "") {
+            for (var a = 0; a < 3; a++) {
+                if (($("#cell" + a + "0").val() == $("#cell" + a + "1").val() && $("#cell" + a + "1").val() == $("#cell" + a + "2").val()) && ($("#cell" + a + "0").val() != "" && $("#cell" + a + "1").val() != "" && $("#cell" + a + "2").val() != "")) {
                     $scope.WinMessage = player + " kazandı !";
                     break;
                 }
-                else if($("#cell0" + a + "").val() == $("#cell1" + a + "").val() && $("#cell1" + a + "").val() == $("#cell2" + a + "").val() == "")
-                {
+                else if (($("#cell0" + a + "").val() == $("#cell1" + a + "").val() && $("#cell1" + a + "").val() == $("#cell2" + a + "").val()) && ($("#cell0" + a + "").val() != "" && $("#cell1" + a + "").val() != "" && $("#cell2" + a + "").val() != "")) {
                     $scope.WinMessage = player + " kazandı !";
                     break;
                 }
+            }
+
+            if (($("#cell00").val() == $("#cell11").val() && $("#cell11").val() == $("#cell22").val()) && ($("#cell00").val() != "" && $("#cell11").val() != "" && $("#cell22").val() != "")) {
+                $scope.WinMessage = player + " kazandı !";
+            }
+
+            if (($("#cell02").val() == $("#cell11").val() && $("#cell11").val() == $("#cell20").val()) && ($("#cell02").val() != "" && $("#cell11").val() != "" && $("#cell20").val() != "")) {
+                $scope.WinMessage = player + " kazandı !";
             }
         };
 
@@ -143,7 +233,7 @@
         if ($scope.Url == "/DevamEdenOyunlar") {
             GetOngoingGameList();
         }
-        //Game End
+        //XOX Game End
 
         //Listeleme İşlemi
         function GetUsers() {

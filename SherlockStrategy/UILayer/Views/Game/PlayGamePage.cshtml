@@ -1,9 +1,10 @@
 ﻿@model Models.Model.Game
 
 <div class="col-md-12">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <h1>@Model.GameName</h1>
         <input type="submit" class="btn btn-default" ng-click="GetTemp(1,@Model.Id)" value="Bilgisayara Karşı Oyna" />
+        <input type="submit" class="btn btn-default" ng-click="GotoGame(@Model.Id)" value="Yeniden Oyna" />
         <input type="submit" class="btn btn-default" ng-click="GetTemp(2,@Model.Id)" value="Oyuncu Davet Et" />
         <br />
         <br />

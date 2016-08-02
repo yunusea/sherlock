@@ -1,0 +1,12 @@
+﻿@model UILayer.ViewModel.ContinueGameViewModel
+
+<div class="col-md-12">
+    <div class="col-md-12">
+        <h1>@Model.Game.GameName</h1>
+        <input type="submit" class="btn btn-default" ng-click="GetTempContinue(@Model.EncounterArchive.Id)" value="Devam Et" />
+        <input type="submit" class="btn btn-default" ng-click="GotoGame(@Model.EncounterArchive.Id)" value="Yeniden Oyna" />
+        <br />
+        <br />
+        <div ng-include="template.url"></div>
+    </div>
+</div>

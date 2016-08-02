@@ -45,9 +45,31 @@ namespace BusinessLayer.Business
             }
         }
 
-        public EncounterArchive GetEncounter(int playerId, int GameId)
+        public EncounterArchive GetEncounterByPlayerId(int playerId, int GameId)
         {
             var criterias = "PlayerId='" + playerId + "' and GameId='" + GameId + "'";
+
+
+            var returnObjects = IoC.Castle.Resolve<IGameRepository>().GetByCriterias("EncounterArchive", criterias);
+
+            List<EncounterArchive> returnList = new List<EncounterArchive>();
+            returnList = ConvertToList<EncounterArchive>(returnObjects);
+
+            if (returnList.Count > 0)
+            {
+                var resultGame = returnList.LastOrDefault();
+
+                return resultGame;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public EncounterArchive GetEncounterById(int eId)
+        {
+            var criterias = "Id='" + eId + "'";
 
 
             var returnObjects = IoC.Castle.Resolve<IGameRepository>().GetByCriterias("EncounterArchive", criterias);
@@ -99,6 +121,25 @@ namespace BusinessLayer.Business
             }
         }
 
+        public List<MoveArchive> GetMoveListByEncounter(int eId)
+        {
+            var criterias = "EncounterId='" + eId + "'";
+
+            var returnObjects = IoC.Castle.Resolve<IGameRepository>().GetByCriterias("MoveArchive", criterias);
+
+            List<MoveArchive> returnList = new List<MoveArchive>();
+            returnList = ConvertToList<MoveArchive>(returnObjects);
+
+            if (returnList.Count > 0)
+            {
+                return returnList.ToList();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public void SaveEncounter(int PlayerId, int EncounterType, int Id)
         {
 
@@ -115,14 +156,16 @@ namespace BusinessLayer.Business
 
         }
 
-        public bool SaveMove(int eId, string cellNameId)
+        public bool SaveMove(int eId, int MoveCellx, int MoveCelly, string CellValue)
         {
             try
             {
                 var MoveArchive = new MoveArchive()
                 {
                     EncounterId = eId,
-                    MoveCellId = cellNameId
+                    MoveCellx = MoveCellx,
+                    MoveCelly = MoveCelly,
+                    CellValue = CellValue
                 };
 
                 var returnInsert = IoC.Castle.Resolve<IGameRepository>().Insert(MoveArchive);
