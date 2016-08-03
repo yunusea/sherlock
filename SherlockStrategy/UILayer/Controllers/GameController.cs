@@ -211,5 +211,36 @@ namespace UILayer.Controllers
                 return Json(ex, "Beklenmedik Bir Hata Oluştur");
             }
         }
+
+        public JsonResult EncounterUpdate(int eId, int winnerInfo)
+        {
+            try
+            {
+                int winnerType;
+                var gameBusiness = new GameBusiness();
+                if(winnerInfo == 1)
+                {
+                    winnerType = 1;
+                }
+                else if(winnerInfo == 2)
+                {
+                    winnerType = 2;
+                }
+                else if (winnerInfo == 3)
+                {
+                    winnerType = 3;
+                }
+                else
+                {
+                    winnerType = 0;
+                }
+                gameBusiness.UpdateEncounter(eId, winnerType);
+                return Json("");
+            }
+            catch (Exception ex)
+            {
+                throw new NotSupportedException("Beklenmedik Bir Hata Oluştu !", ex);
+            }
+        }
     }
 }

@@ -88,15 +88,24 @@
         };
 
         $scope.fillCell = function (x1, x2) {
-            if ($scope.WinMessage == null) {
+            if ($scope.FinishStatus != 1) {
                 var value = $("#cell" + x1 + x2 + "").val();
                 if (value == "") {
                     var data = { eId: $scope.EncounterId, MoveCellx: x1, MoveCelly: x2, Value: "X" };
                     $http.post("/Game/SaveMove", data).success(function (returnData) {
                         $("#cell" + x1 + x2 + "").val("X");
                         $scope.GameFinishControl("Oyuncu");
-                        if ($scope.WinMessage == null) {
-                            $scope.OpponentMove();
+                        
+                        if ($scope.FinishStatus != 1) {
+
+                            CellFinishControl();
+                            if ($scope.CellFinishReturn == true) {
+                                $scope.OpponentMove();
+                            }
+                        }
+                        else {
+                            FinishDisableButtons();
+                            EncounterStatusUpdate();
                         }
                     }).error(function (ex) {
                         console.log(ex);
@@ -104,101 +113,147 @@
                     });
                 }
             }
+            else {
+                FinishDisableButtons();
+            }
+        };
+
+        function FinishDisableButtons() {
+            $(".xoxCell").attr("disabled", "disabled");
+        }
+
+        function EncounterStatusUpdate() {
+            var data = { eId: $scope.EncounterId, winnerInfo: $scope.WinnerPlayler };
+            $http.post("/Game/EncounterUpdate", data).success(function (returnData) {
+                console.log(returnData);
+            }).error(function (ex) {
+                console.log(ex);
+            });
+        };
+
+        function CellFinishControl() {
+            var count = 0;
+            $(".xoxCell").each(function () {
+                if ($(this).val() == "") {
+                    count += 1;
+                }
+            });
+
+            if (count == 0) {
+                $scope.CellFinishReturn = false;
+                FinishDisableButtons();
+                $scope.WinMessage = "Beraberlik kazandı !";
+                $scope.WinnerPlayler = 3;
+                EncounterStatusUpdate();
+            }
+            else
+            {
+                $scope.CellFinishReturn = true;
+            }
         };
 
         $scope.OpponentMove = function () {
 
             var status;
             var x1, x2;
-            for (var i = 0; i < 3; i++) {
 
-                if (status == true) {
-                    $scope.GameFinishControl("Bilgisayar");
-                    break;
-                }
+            CellFinishControl();
+            if ($scope.CellFinishReturn == true) {
+                for (var i = 0; i < 3; i++) {
 
-                if (($("#cell" + i + "0").val() != "" && $("#cell" + i + "1").val() != "") && ($("#cell" + i + "0").val() == $("#cell" + i + "1").val()) && $("#cell" + i + "2").val() == "") {
-                    $("#cell" + i + "2").val("O");
-                    x1 = i; x2 = 2;
-                    status = true;
-                }
-                else if (($("#cell0" + i + "").val() != "" && $("#cell1" + i + "").val() != "") && ($("#cell0" + i + "").val() == $("#cell1" + i + "").val()) && $("#cell2" + i + "").val() == "") {
-                    $("#cell2" + i + "").val("O");
-                    x1 = 2; x2 = i;
-                    status = true;
-                }
-                else if (($("#cell" + i + "0").val() != "" && $("#cell" + i + "2").val() != "") && ($("#cell" + i + "0").val() == $("#cell" + i + "2").val()) && $("#cell" + i + "1").val() == "") {
-                    $("#cell" + i + "1").val("O");
-                    x1 = i; x2 = 1;
-                    status = true;
-                }
-                else if (($("#cell0" + i + "").val() != "" && $("#cell2" + i + "").val() != "") && ($("#cell0" + i + "").val() == $("#cell2" + i + "").val()) && $("#cell1" + i + "").val() == "") {
-                    $("#cell1" + i + "").val("O");
-                    x1 = 1; x2 = i;
-                    status = true;
-                }
-                else if (($("#cell" + i + "2").val() != "" && $("#cell" + i + "1").val() != "") && ($("#cell" + i + "2").val() == $("#cell" + i + "1").val()) && $("#cell" + i + "0").val() == "") {
-                    $("#cell" + i + "0").val("O");
-                    x1 = i; x2 = 0;
-                    status = true;
-                }
-                else if (($("#cell2" + i + "").val() != "" && $("#cell1" + i + "").val() != "") && ($("#cell2" + i + "").val() == $("#cell1" + i + "").val()) && $("#cell0" + i + "").val() == "") {
-                    $("#cell0" + i + "").val("O");
-                    x1 = 0; x2 = i;
-                    status = true;
-                }
-                else if (($("#cell00").val() != "" && $("#cell11").val() != "") && ($("#cell00").val() == $("#cell11").val()) && $("#cell22").val() == "") {
-                    $("#cell22").val("O");
-                    x1 = 2; x2 = 2;
-                    status = true;
-                }
-                else if (($("#cell00").val() != "" && $("#cell22").val() != "") && ($("#cell00").val() == $("#cell22").val()) && $("#cell11").val() == "") {
-                    $("#cell11").val("O");
-                    x1 = 1; x2 = 1;
-                    status = true;
-                }
-                else if (($("#cell22").val() != "" && $("#cell11").val() != "") && ($("#cell22").val() == $("#cell11").val()) && $("#cell00").val() == "") {
-                    $("#cell00").val("O");
-                    x1 = 0; x2 = 0;
-                    status = true;
-                }
-                else if (($("#cell02").val() != "" && $("#cell11").val() != "") && ($("#cell02").val() == $("#cell11").val()) && $("#cell20").val() == "") {
-                    $("#cell20").val("O");
-                    x1 = 2; x2 = 0;
-                    status = true;
-                }
-                else if (($("#cell02").val() != "" && $("#cell20").val() != "") && ($("#cell02").val() == $("#cell20").val()) && $("#cell11").val() == "") {
-                    $("#cell11").val("O");
-                    x1 = 1; x2 = 1;
-                    status = true;
-                }
-                else if (($("#cell20").val() != "" && $("#cell11").val() != "") && ($("#cell20").val() == $("#cell11").val()) && $("#cell02").val() == "") {
-                    $("#cell02").val("O");
-                    x1 = 0; x2 = 2;
-                    status = true;
-                }
-                if (i == 2) {
-                    if (status != true) {
-                        x = Math.floor((Math.random() * 2));
-                        y = Math.floor((Math.random() * 2));
-                        if ($("#cell" + x + y + "").val() == "") {
-                            $("#cell" + x + y + "").val("O");
-                            x1 = x; x2 = y;
-                            status = true;
-                        } else {
-                            i = 0;
+                    if (status == true) {
+                        $scope.GameFinishControl("Bilgisayar");
+                        break;
+                    }
+
+                    if (($("#cell" + i + "0").val() != "" && $("#cell" + i + "1").val() != "") && ($("#cell" + i + "0").val() == $("#cell" + i + "1").val()) && $("#cell" + i + "2").val() == "") {
+                        $("#cell" + i + "2").val("O");
+                        x1 = i; x2 = 2;
+                        status = true;
+                    }
+                    else if (($("#cell0" + i + "").val() != "" && $("#cell1" + i + "").val() != "") && ($("#cell0" + i + "").val() == $("#cell1" + i + "").val()) && $("#cell2" + i + "").val() == "") {
+                        $("#cell2" + i + "").val("O");
+                        x1 = 2; x2 = i;
+                        status = true;
+                    }
+                    else if (($("#cell" + i + "0").val() != "" && $("#cell" + i + "2").val() != "") && ($("#cell" + i + "0").val() == $("#cell" + i + "2").val()) && $("#cell" + i + "1").val() == "") {
+                        $("#cell" + i + "1").val("O");
+                        x1 = i; x2 = 1;
+                        status = true;
+                    }
+                    else if (($("#cell0" + i + "").val() != "" && $("#cell2" + i + "").val() != "") && ($("#cell0" + i + "").val() == $("#cell2" + i + "").val()) && $("#cell1" + i + "").val() == "") {
+                        $("#cell1" + i + "").val("O");
+                        x1 = 1; x2 = i;
+                        status = true;
+                    }
+                    else if (($("#cell" + i + "2").val() != "" && $("#cell" + i + "1").val() != "") && ($("#cell" + i + "2").val() == $("#cell" + i + "1").val()) && $("#cell" + i + "0").val() == "") {
+                        $("#cell" + i + "0").val("O");
+                        x1 = i; x2 = 0;
+                        status = true;
+                    }
+                    else if (($("#cell2" + i + "").val() != "" && $("#cell1" + i + "").val() != "") && ($("#cell2" + i + "").val() == $("#cell1" + i + "").val()) && $("#cell0" + i + "").val() == "") {
+                        $("#cell0" + i + "").val("O");
+                        x1 = 0; x2 = i;
+                        status = true;
+                    }
+                    else if (($("#cell00").val() != "" && $("#cell11").val() != "") && ($("#cell00").val() == $("#cell11").val()) && $("#cell22").val() == "") {
+                        $("#cell22").val("O");
+                        x1 = 2; x2 = 2;
+                        status = true;
+                    }
+                    else if (($("#cell00").val() != "" && $("#cell22").val() != "") && ($("#cell00").val() == $("#cell22").val()) && $("#cell11").val() == "") {
+                        $("#cell11").val("O");
+                        x1 = 1; x2 = 1;
+                        status = true;
+                    }
+                    else if (($("#cell22").val() != "" && $("#cell11").val() != "") && ($("#cell22").val() == $("#cell11").val()) && $("#cell00").val() == "") {
+                        $("#cell00").val("O");
+                        x1 = 0; x2 = 0;
+                        status = true;
+                    }
+                    else if (($("#cell02").val() != "" && $("#cell11").val() != "") && ($("#cell02").val() == $("#cell11").val()) && $("#cell20").val() == "") {
+                        $("#cell20").val("O");
+                        x1 = 2; x2 = 0;
+                        status = true;
+                    }
+                    else if (($("#cell02").val() != "" && $("#cell20").val() != "") && ($("#cell02").val() == $("#cell20").val()) && $("#cell11").val() == "") {
+                        $("#cell11").val("O");
+                        x1 = 1; x2 = 1;
+                        status = true;
+                    }
+                    else if (($("#cell20").val() != "" && $("#cell11").val() != "") && ($("#cell20").val() == $("#cell11").val()) && $("#cell02").val() == "") {
+                        $("#cell02").val("O");
+                        x1 = 0; x2 = 2;
+                        status = true;
+                    }
+                    if (i == 2) {
+                        if (status != true) {
+                            x = Math.floor((Math.random() * 2));
+                            y = Math.floor((Math.random() * 2));
+                            if ($("#cell" + x + y + "").val() == "") {
+                                $("#cell" + x + y + "").val("O");
+                                x1 = x; x2 = y;
+                                status = true;
+                            } else {
+                                i = 0;
+                            }
                         }
                     }
                 }
             }
+                    var data = { eId: $scope.EncounterId, MoveCellx: x1, MoveCelly: x2, Value: "O" };
+                    $http.post("/Game/SaveMove", data).success(function (returnData) {
+                        console.log("Save Move Success !");
+                    }).error(function (ex) {
+                        console.log(ex);
+                        $("#cell" + x1 + x2 + "").val("");
+                    });
+                
 
-            var data = { eId: $scope.EncounterId, MoveCellx: x1, MoveCelly: x2, Value: "O" };
-            $http.post("/Game/SaveMove", data).success(function (returnData) {
-                console.log("Save Move Success !");
-            }).error(function (ex) {
-                console.log(ex);
-                $("#cell" + x1 + x2 + "").val("");
-            });
+            if ($scope.FinishStatus != null && $scope.FinishStatus == 1) {
+                FinishDisableButtons();
+                EncounterStatusUpdate();
+            }
         };
 
         $scope.GameFinishControl = function (player) {
@@ -206,20 +261,30 @@
             for (var a = 0; a < 3; a++) {
                 if (($("#cell" + a + "0").val() == $("#cell" + a + "1").val() && $("#cell" + a + "1").val() == $("#cell" + a + "2").val()) && ($("#cell" + a + "0").val() != "" && $("#cell" + a + "1").val() != "" && $("#cell" + a + "2").val() != "")) {
                     $scope.WinMessage = player + " kazandı !";
+                    $scope.FinishStatus = 1;
                     break;
                 }
                 else if (($("#cell0" + a + "").val() == $("#cell1" + a + "").val() && $("#cell1" + a + "").val() == $("#cell2" + a + "").val()) && ($("#cell0" + a + "").val() != "" && $("#cell1" + a + "").val() != "" && $("#cell2" + a + "").val() != "")) {
                     $scope.WinMessage = player + " kazandı !";
+                    $scope.FinishStatus = 1;
                     break;
                 }
             }
 
             if (($("#cell00").val() == $("#cell11").val() && $("#cell11").val() == $("#cell22").val()) && ($("#cell00").val() != "" && $("#cell11").val() != "" && $("#cell22").val() != "")) {
                 $scope.WinMessage = player + " kazandı !";
+                $scope.FinishStatus = 1;
             }
 
             if (($("#cell02").val() == $("#cell11").val() && $("#cell11").val() == $("#cell20").val()) && ($("#cell02").val() != "" && $("#cell11").val() != "" && $("#cell20").val() != "")) {
                 $scope.WinMessage = player + " kazandı !";
+                $scope.FinishStatus = 1;
+            }
+
+            if ($scope.WinMessage == "Bilgisayar") {
+                $scope.WinnerPlayler = 1;
+            } else if ($scope.WinMessage == "Oyuncu") {
+                $scope.WinnerPlayler = 2;
             }
         };
 

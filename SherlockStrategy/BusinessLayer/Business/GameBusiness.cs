@@ -104,7 +104,7 @@ namespace BusinessLayer.Business
 
         public List<EncounterArchive> OngoingGameList(int pId)
         {
-            var criterias = "PlayerId='" + pId + "'";
+            var criterias = "PlayerId='" + pId + "' and EncounterStatus='2'";
 
             var returnObjects = IoC.Castle.Resolve<IGameRepository>().GetByCriterias("EncounterArchive", criterias);
 
@@ -147,9 +147,9 @@ namespace BusinessLayer.Business
             {
                 GameId = Id,
                 EncounterType = EncounterType,
-                MoveCount = 0,
                 StartDate = DateTime.Now,
-                PlayerId = PlayerId
+                PlayerId = PlayerId,
+                EncounterStatus = 2
             };
 
             IoC.Castle.Resolve<IGameRepository>().Insert(EncounterArchive);
@@ -177,6 +177,15 @@ namespace BusinessLayer.Business
             }
 
         }
+
+        public void UpdateEncounter(int eId, int winnerType)
+        {
+            var tableName = "EncounterArchive";
+            var setList = "EncounterStatus='1',WinnerType='" + winnerType + "'";
+            var criterList = "Id='" + eId + "'";
+            IoC.Castle.Resolve<IGameRepository>().SpecialUpdate(tableName,setList,criterList);
+        }
+
         public List<T> ConvertToList<T>(DataTable dt)
         {
             var columnNames = dt.Columns.Cast<DataColumn>()
