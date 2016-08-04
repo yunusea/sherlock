@@ -1,0 +1,7 @@
+Oyun içerisinde as,2,3,4,5,6,7,8,9,10,vale,kýz,papaz kartlarý var.
+Her karttan 4 adet var. Kupa, Karo, Maça, Sinek
+Bir kartýn tipinin deðerine herhangi bir etkisi olmuyor. Karo 4 ile sinek 4 ayný deðere sahiptir.
+Vale, Kýz ve Papaz kartlarý 10 sayý deðerindedir.
+as 2 farklý deðere sahiptir. Oyuncunun elinde bulunan kartlara göre as 1 yada 11 deðerini alabilir.
+Oyunu kazanmak için 21 sayý toplanmasý veya 21'e en yakýn sayýnýn toplanmasý gerekiyor.
+21 sayýyý geçen kullanýcý otomatikman kaybediyor.

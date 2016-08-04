@@ -5,6 +5,7 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EA355281-0B77-473E-823E-C199B09B7753}"
 	ProjectSection(SolutionItems) = preProject
+		BlackJack-Analysis.txt = BlackJack-Analysis.txt
 		SOS-Algoritmasi.txt = SOS-Algoritmasi.txt
 		strateji-oyunu-projesi.txt = strateji-oyunu-projesi.txt
 		Yapılacaklar.txt = Yapılacaklar.txt
